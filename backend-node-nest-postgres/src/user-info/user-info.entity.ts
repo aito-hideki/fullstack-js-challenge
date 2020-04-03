@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
-import { Admin } from '../admin/admin.entity';
-import { User } from '../user/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Admin } from 'src/admin/admin.entity';
+import { User } from 'src/user/user.entity';
 
 @Entity()
 export class UserInfo {
@@ -16,9 +16,9 @@ export class UserInfo {
   @Column({ default: false })
   isAdmin: boolean;
 
-  @OneToOne(() => Admin, admin => admin.info, { nullable: true })
+  @OneToOne(() => Admin, ({ info }) => info, { nullable: true })
   admin: Admin
 
-  @OneToOne(() => User, user => user.info, { nullable: true })
+  @OneToOne(() => User, ({ info }) => info, { nullable: true })
   user: User
 }

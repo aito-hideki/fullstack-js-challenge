@@ -4,10 +4,10 @@ services:
   backend-node:
     container_name: backend_node
     build:
-      context: ../backend-node-nest-postgres
+      context: src/backend-node-nest-postgres
       target: development
     volumes:
-      - ../backend-node-nest-postgres:/usr/src/backend-node
+      - src/backend-node-nest-postgres:/usr/src/backend-node
       - /usr/src/backend-node/node_modules
     env_file:
       - .env

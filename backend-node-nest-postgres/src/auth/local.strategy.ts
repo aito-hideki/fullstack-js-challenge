@@ -14,12 +14,12 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(
     request: Request,
-    username: string,
+    email: string,
     password: string,
   ) {
     const contextId = ContextIdFactory.getByRequest(request);
     const authService = await this.moduleRef.resolve(AuthService, contextId);
-    const user = await authService.validator(username, password);
+    const user = await authService.validator(email, password);
 
     if (!user) {
       throw new UnauthorizedException();

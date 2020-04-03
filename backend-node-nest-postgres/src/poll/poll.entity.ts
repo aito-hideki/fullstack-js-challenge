@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, ManyToMany, OneToMany, ManyToOne } from 'typeorm'
-import { Admin } from '../admin/admin.entity';
-import { User } from '../user/user.entity';
+import { Admin } from 'src/admin/admin.entity';
+import { User } from 'src/user/user.entity';
 import { Paper } from 'src/paper/paper.entity';
 
 @Entity()
