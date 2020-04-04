@@ -12,11 +12,28 @@ export class AuthService {
   ) {}
 
   async validator(email: string): Promise<any> {
-    const user = await this.adminService.findAdmin(email) || await this.userService.findUser(email);
+    return await this.adminValidator(email) || await this.userValidator(email);
+  }
+
+  async adminValidator(email: string): Promise<any> {
+    const user = await this.adminService.findAdmin(email)
 
     if (user) {
       const { password, ...result } = user;
-      void(password)
+      void (password)
+
+      return result;
+    }
+
+    return null;
+  }
+
+  async userValidator(email: string): Promise<any> {
+    const user = await this.userService.findUser(email);
+
+    if (user) {
+      const { password, ...result } = user;
+      void (password)
 
       return result;
     }
