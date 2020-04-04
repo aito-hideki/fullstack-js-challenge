@@ -7,13 +7,12 @@ export class AdminRepository extends Repository<Admin> {
     return this.findOneOrFail(id, { loadRelationIds: true })
   }
 
-  createAdmin = async (adminInfo) => {
-    const { firstName, lastName, info } = adminInfo
+  createAdmin = async (profileInfo) => {
+    const { email, password } = profileInfo
 
-    return await this.create({
-      firstName,
-      lastName,
-      info
+    return await this.save({
+      email,
+      password
     })
   }
 }

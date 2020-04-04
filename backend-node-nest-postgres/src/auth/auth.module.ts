@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LocalStrategy } from './local.strategy';
-import { UserInfoModule } from 'src/user-info/user-info.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
+import { AdminModule } from 'src/admin/admin.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -14,9 +14,10 @@ import { JwtStrategy } from './jwt.strategy';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '300m' },
     }),
-    UserInfoModule,
+    AdminModule,
+    UserModule
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

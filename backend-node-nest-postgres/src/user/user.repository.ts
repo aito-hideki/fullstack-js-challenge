@@ -7,13 +7,16 @@ export class UserRepository extends Repository<User> {
     return this.findOneOrFail(id, { loadRelationIds: true })
   }
 
-  createUser = async (userInfo) => {
-    const { firstName, lastName, mobile } = userInfo
+  createUser = async (profileInfo) => {
+    const { email, password, firstName, lastName, mobile, admin } = profileInfo
 
-    return await this.create({
+    return await this.save({
+      email,
+      password,
       firstName,
       lastName,
-      mobile
+      mobile,
+      admin
     })
   }
 }

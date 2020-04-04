@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToMany, OneToOne, ManyToOne, OneToMany, Column } from 'typeorm'
-import { UserInfo } from 'src/user-info/user-info.entity';
+import { Entity, PrimaryGeneratedColumn, ManyToMany, OneToOne, ManyToOne, OneToMany, Column, JoinColumn } from 'typeorm'
 import { Admin } from 'src/admin/admin.entity';
 import { Poll } from 'src/poll/poll.entity';
 import { Paper } from 'src/paper/paper.entity';
@@ -9,19 +8,23 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => UserInfo, info => info.user)
-  info: UserInfo;
-
   @ManyToOne(() => Admin, admin => admin.users)
+  @JoinColumn()
   admin: Admin
 
-  @Column()
+  @Column({ nullable: true })
+  email: string
+
+  @Column({ nullable: true })
+  password: string
+
+  @Column({ nullable: true })
   firstName: string
 
-  @Column()
+  @Column({ nullable: true })
   lastName: string
 
-  @Column()
+  @Column({ nullable: true })
   mobile: string
 
   @ManyToMany(() => Poll, poll => poll.users)
