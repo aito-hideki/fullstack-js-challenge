@@ -4,7 +4,7 @@ services:
   backend-node:
     container_name: backend_node
     build:
-      context: src/backend-node-nest-postgres
+      context: ../backend-node-nest-postgres
       target: development
     volumes:
       - src/backend-node-nest-postgres:/usr/src/backend-node
