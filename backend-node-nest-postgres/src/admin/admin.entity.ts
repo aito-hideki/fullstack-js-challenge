@@ -7,7 +7,7 @@ import { Paper } from 'src/paper/paper.entity';
 @Entity()
 export class Admin {
   @PrimaryGeneratedColumn()
-  id: number;
+  adminId: number;
 
   @OneToOne(() => UserInfo, info => info.admin)
   info: UserInfo;

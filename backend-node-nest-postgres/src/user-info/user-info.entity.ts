@@ -1,11 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { Admin } from 'src/admin/admin.entity';
 import { User } from 'src/user/user.entity';
 
 @Entity()
 export class UserInfo {
   @PrimaryGeneratedColumn()
-  id: number;
+  userId: number;
 
   @Column()
   email: string;

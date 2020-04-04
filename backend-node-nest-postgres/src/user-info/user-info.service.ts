@@ -3,7 +3,6 @@ import { UserInfoRepository } from './user-info.repository';
 import { AdminRepository } from 'src/admin/admin.repository';
 import { UserRepository } from 'src/user/user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { userInfo } from 'os';
 
 export type UserInfo = any;
 
@@ -73,7 +72,7 @@ export class UserInfoService {
       console.log(info)
 
       if (isAdmin) {
-        let admin = await this.adminRepository.createAdmin({ ...profileInfo, info })
+        const admin = await this.adminRepository.createAdmin({ ...profileInfo, info })
         console.log(admin)
 
         await this.userInfoRepository.save({ ...info, admin: { ...admin, info } })
