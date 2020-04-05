@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AdminService } from 'src/admin/admin.service'
 import { UserService } from 'src/user/user.service';
+import { caseConvert } from 'src/utils/case-convert';
 
 @Injectable()
 export class AuthService {
@@ -42,8 +43,8 @@ export class AuthService {
   }
 
   async login(user: any) {
-    return {
-      access_token: this.jwtService.sign(user),
-    };
+    return caseConvert({
+      accessToken: this.jwtService.sign(user),
+    }, false);
   }
 }

@@ -13,7 +13,7 @@ export class AdminService {
   ) {
     this.adminRepository.delete({})
     this.setupProfile({
-      email: 'admin@crud.com',
+      email: 'admin@voteapp.com',
       password: 'admin0109'
     })
   }

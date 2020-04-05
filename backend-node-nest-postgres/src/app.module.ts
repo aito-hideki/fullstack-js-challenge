@@ -7,7 +7,6 @@ import { AdminModule } from './admin/admin.module';
 import { UserModule } from './user/user.module';
 import { PollModule } from './poll/poll.module';
 import { PaperModule } from './paper/paper.module';
-import { AnswerModule } from './answer/answer.module';
 
 @Module({
 	imports: [
@@ -16,8 +15,7 @@ import { AnswerModule } from './answer/answer.module';
 		AdminModule,
 		UserModule,
 		PollModule,
-		PaperModule,
-		AnswerModule
+		PaperModule
 	],
 	controllers: [ AppController ],
 	providers: [ AppService ]

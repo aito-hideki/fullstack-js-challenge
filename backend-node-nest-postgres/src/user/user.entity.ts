@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToMany, OneToOne, ManyToOne, OneToMany, Column, JoinColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, ManyToMany, ManyToOne, OneToMany, Column, JoinColumn } from 'typeorm'
 import { Admin } from 'src/admin/admin.entity';
 import { Poll } from 'src/poll/poll.entity';
 import { Paper } from 'src/paper/paper.entity';
@@ -9,7 +9,6 @@ export class User {
   id: number;
 
   @ManyToOne(() => Admin, admin => admin.users)
-  @JoinColumn()
   admin: Admin
 
   @Column({ nullable: true })
