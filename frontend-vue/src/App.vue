@@ -2,38 +2,15 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="success darken-1"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <h2>Welcome!</h2>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn text>
+        <span class="mr-2">Login</span>
       </v-btn>
     </v-app-bar>
 
@@ -43,12 +20,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { onMounted } from '@vue/composition-api'
 
 export default Vue.extend({
   name: 'App',
-
-  data: () => ({
-    //
-  })
+  setup (props, ctx) {
+    onMounted(() => {
+      console.log('apple seed')
+    })
+    return {
+    }
+  }
 })
 </script>

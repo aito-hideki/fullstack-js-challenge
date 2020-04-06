@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AdminService } from 'src/admin/admin.service'
 import { UserService } from 'src/user/user.service';
@@ -43,8 +43,16 @@ export class AuthService {
   }
 
   async login(user: any) {
+    const { email } = user
+
+    const profile = await this.validator(email);
+    if (!profile) throw new UnauthorizedException()
+
+    const { isAdmin } = profile
+
     return caseConvert({
       accessToken: this.jwtService.sign(user),
+      isAdmin
     }, false);
   }
 }

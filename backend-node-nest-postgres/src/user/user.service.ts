@@ -15,6 +15,7 @@ export class UserService {
   }
 
   findUser = async (email: string) => {
-    return await this.userRepository.findOne({ email })
+    const user = await this.userRepository.findOne({ email })
+    return user ? { ...user, isAdmin: false } : null
   }
 }

@@ -19,7 +19,8 @@ export class AdminService {
   }
 
   findAdmin = async (email: string) => {
-    return await this.adminRepository.findOne({ email })
+    const admin = await this.adminRepository.findOne({ email })
+    return admin ? { ...admin, isAdmin: true } : null
   }
 
   setupProfile = async (profileInfo) => {
