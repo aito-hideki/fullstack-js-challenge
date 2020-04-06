@@ -2,11 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
-const authGuard = (to: any, from: any, next: any) => {
-  const isAuthenticated = true
-  if (to.name !== 'Login' && isAuthenticated) next({ name: 'Login' })
-  next()
-}
+// const authGuard = (to: any, from: any, next: any) => {
+//   const isAuthenticated = true
+//   if (to.name !== 'Login' && isAuthenticated) next({ name: 'Login' })
+//   next()
+// }
 
 Vue.use(VueRouter)
 

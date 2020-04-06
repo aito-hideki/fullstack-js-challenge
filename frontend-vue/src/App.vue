@@ -1,35 +1,25 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="success darken-1"
-      dark
-    >
-      <h2>Welcome!</h2>
+    <app-tool-bar />
+    <app-drawer />
 
-      <v-spacer></v-spacer>
-
-      <v-btn text>
-        <span class="mr-2">Login</span>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content />
+    <router-view />
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { onMounted } from '@vue/composition-api'
+import { onMounted, watch } from '@vue/composition-api'
 
 export default Vue.extend({
   name: 'App',
-  setup (props, ctx) {
+  setup: (props, ctx) => {
     onMounted(() => {
-      console.log('apple seed')
+      ctx.root.$store.dispatch('getProfile')
     })
-    return {
-    }
+    watch(() => ctx.root.$store.getters.logged, (logged: any) => ctx.root.$store.commit('setDrawer', logged))
+
+    return {}
   }
 })
 </script>

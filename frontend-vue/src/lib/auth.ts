@@ -1,8 +1,6 @@
-import Vue from 'vue'
-
 export const saveToken = (token: any) => {
   if (token) {
-    if (typeof (token) === 'object' && token.access_token && token.refresh_token) {
+    if (typeof (token) === 'object' && token.accessToken) {
       localStorage.setItem('voteapp-credential', JSON.stringify(token))
     }
   }
@@ -10,10 +8,9 @@ export const saveToken = (token: any) => {
 
 export const clearToken = () => {
   localStorage.setItem('voteapp-credential', '')
-  Vue.prototype.$utils.navigate('/login')
 }
 
-export const getToken = () => {
+export const getToken = (): any => {
   let token = localStorage.getItem('voteapp-credential')
   if (token) {
     try {
@@ -28,4 +25,4 @@ export const getToken = () => {
   return null
 }
 
-export const isEmptyToken = (token: any) => !(typeof (token) === 'object' && token && token.access_token && token.refresh_token)
+export const isEmptyToken = (token: any): boolean => !(typeof (token) === 'object' && token && token.accessToken)

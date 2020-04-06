@@ -1,13 +1,13 @@
 import * as _ from 'lodash'
 
-const toCamelCase = (res: any) => {
+export const toCamelCase = (res: any) => {
   return Object.keys(res).reduce((acc: any, cur: string) => {
     acc[_.camelCase(cur)] = caseConvert(res[cur], true)
     return acc
   }, {})
 }
 
-const toSnakecase = (res: any) => {
+export const toSnakecase = (res: any) => {
   return Object.keys(res).reduce((acc: any, cur: string) => {
     acc[_.snakeCase(cur)] = caseConvert(res[cur], false)
     return acc
