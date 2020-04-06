@@ -36,7 +36,7 @@
           text
           @click="logout"
         >
-          <span class="mr-2">Log out</span>
+          <span class="mr-2">Logout</span>
         </v-btn>
 
         <v-btn

@@ -72,7 +72,10 @@ export default Vue.extend({
       get: (): string => store.state.password,
       set: (password: string) => store.commit('setPassword', password)
     })
-    const loginDialog = computed(() => store.state.loginDialog)
+    const loginDialog = computed({
+      get: () => store.state.loginDialog,
+      set: (dialog: boolean) => store.dispatch('openLoginDialog', dialog)
+    })
     const loadingLogin = computed(() => store.state.loadingLogin)
 
     const login = () => {

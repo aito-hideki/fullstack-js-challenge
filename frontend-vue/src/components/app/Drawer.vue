@@ -32,7 +32,7 @@
         @click="logout"
       >
         <v-list-item-action>
-          <v-icon>mdi-login</v-icon>
+          <v-icon>mdi-login-variant</v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>
@@ -47,7 +47,7 @@
         @click="openLoginDialog"
       >
         <v-list-item-action>
-          <v-icon>mdi-login</v-icon>
+          <v-icon>mdi-login-variant</v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>
@@ -62,7 +62,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { computed } from '@vue/composition-api'
-import { menu } from '@/constants/app'
+import { paths } from '@/constants/app'
+import { getToken, isEmptyToken } from '@/lib/auth'
+import { AuthenticationStatus } from '@/constants/auth'
 
 export default Vue.extend({
   setup: (props, ctx) => {
@@ -73,7 +75,21 @@ export default Vue.extend({
       set: (drawer: boolean) => store.commit('openDrawer', drawer)
     })
     const logged = computed(() => store.getters.logged)
-    const menuItems = computed(() => menu)
+    const menuItems = computed(() => {
+      const token = getToken()
+      let authStatus: AuthenticationStatus
+
+      if (!store.state.profile) authStatus = AuthenticationStatus.UnLogged
+      else if (store.state.profile.isAdmin) authStatus = AuthenticationStatus.Admin
+      else authStatus = AuthenticationStatus.User
+
+      return paths.filter((item: any) => !item.redirect)
+        .filter((item: any) => !Object.prototype.hasOwnProperty.call(item, 'role') ||
+          authStatus === item.role || (
+          authStatus !== AuthenticationStatus.UnLogged &&
+          item.role === AuthenticationStatus.Logged
+        ))
+    })
     const openLoginDialog = () => store.commit('openLoginDialog', true)
     const logout = () => store.dispatch('logout')
 
