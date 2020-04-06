@@ -2,7 +2,7 @@
   <v-app>
     <app-tool-bar />
     <app-drawer />
-
+    <app-login-dialog />
     <router-view />
   </v-app>
 </template>
@@ -14,10 +14,10 @@ import { onMounted, watch } from '@vue/composition-api'
 export default Vue.extend({
   name: 'App',
   setup: (props, ctx) => {
-    onMounted(() => {
-      ctx.root.$store.dispatch('getProfile')
-    })
-    watch(() => ctx.root.$store.getters.logged, (logged: any) => ctx.root.$store.commit('setDrawer', logged))
+    const store = ctx.root.$store
+
+    onMounted(() => store.dispatch('getProfile'))
+    watch(() => store.getters.logged, (logged: any) => store.commit('openDrawer', logged))
 
     return {}
   }

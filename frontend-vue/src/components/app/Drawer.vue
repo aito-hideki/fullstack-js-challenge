@@ -25,6 +25,36 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item
+        v-if="logged"
+        color="success"
+        link
+        @click="logout"
+      >
+        <v-list-item-action>
+          <v-icon>mdi-login</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>
+            Logout
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item
+        v-else
+        color="success"
+        link
+        @click="openLoginDialog"
+      >
+        <v-list-item-action>
+          <v-icon>mdi-login</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>
+            Login
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -35,16 +65,25 @@ import { computed } from '@vue/composition-api'
 import { menu } from '@/constants/app'
 
 export default Vue.extend({
-  setup (props, ctx) {
+  setup: (props, ctx) => {
+    const store = ctx.root.$store
+
     const drawer = computed({
-      get: () => ctx.root.$store.state.drawer,
-      set: (drawer: boolean) => ctx.root.$store.commit('setDrawer', drawer)
+      get: () => store.state.drawer,
+      set: (drawer: boolean) => store.commit('openDrawer', drawer)
     })
+    const logged = computed(() => store.getters.logged)
     const menuItems = computed(() => menu)
+    const openLoginDialog = () => store.commit('openLoginDialog', true)
+    const logout = () => store.dispatch('logout')
 
     return {
       drawer,
-      menuItems
+      logged,
+      menuItems,
+
+      openLoginDialog,
+      logout
     }
   }
 })
