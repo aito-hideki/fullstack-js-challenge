@@ -1,7 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminRepository } from './admin.repository';
 import { UserRepository } from 'src/user/user.repository';
+import { AuthService } from 'src/auth/auth.service';
+
+const {
+  SUPERADMIN_EMAIL,
+  SUPERADMIN_PASSWORD
+} = process.env
 
 @Injectable()
 export class AdminService {
@@ -13,8 +19,9 @@ export class AdminService {
   ) {
     this.adminRepository.delete({})
     this.setupProfile({
-      email: 'admin@voteapp.com',
-      password: 'admin0109'
+      email: SUPERADMIN_EMAIL,
+      password: SUPERADMIN_PASSWORD,
+      active: true
     })
   }
 
@@ -23,26 +30,67 @@ export class AdminService {
     return admin ? { ...admin, isAdmin: true } : null
   }
 
+  getAllAdmins = async () => {
+    return (await this.adminRepository.find()).map(profile => ({
+      ...profile,
+      isAdmin: true
+    }))
+  }
+
   setupProfile = async (profileInfo) => {
-    const { email } = profileInfo
-    if (await this.adminRepository.count({ email })) {
-      await this.updateProfile(profileInfo)
-    } else {
-      await this.createProfile(profileInfo)
-    }
+    const { email, password, active } = profileInfo
+
+    const profile = this.findAdmin(email)
+    const admin = await this.adminRepository.save({
+      ...(profile || {}),
+      email,
+      password,
+      active
+    })
+
+    return admin ? { ...admin, isAdmin: true } : null
   }
 
   updateProfile = async (profileInfo) => {
-    const { email, password } = profileInfo
+    const {
+      email,
+      password,
+      active
+    } = profileInfo
 
-    const profile = this.adminRepository.findOne({ email })
-    return await this.adminRepository.save({ ...profile, email, password })
+    const profile = this.findAdmin(email)
+    if (!profile) throw new NotFoundException('Particular Admin not found')
+
+    const admin = await this.adminRepository.save({
+      ...profile,
+      email,
+      password,
+      active
+    })
+
+    return admin ? { ...admin, isAdmin: true } : null
   }
 
-  createProfile = async (profileInfo) => {
-    const { email, password } = profileInfo
+  createProfile = async ({ email }) => {
+    if (await this.adminRepository.count({ email }) &&
+      await this.userRepository.count({ email })) {
+      throw new ForbiddenException('A user with same email address already exists')
+    }
 
-    const admin = await this.adminRepository.save({ email, password })
+    const admin = await this.adminRepository.save({ email, password: '' })
     return admin
+  }
+
+  activate = async(email: string, password: string) => {
+    const profile = await this.findAdmin(email)
+    if (!profile) throw new NotFoundException('Particular Admin not found')
+
+    const admin = await this.adminRepository.save({
+      ...profile,
+      password,
+      active: true
+    })
+
+    return admin ? { ...admin, isAdmin: true } : null
   }
 }
