@@ -8,11 +8,14 @@ export class Admin {
   @PrimaryGeneratedColumn()
   adminId: number
 
-  @Column({ nullable: true })
+  @Column()
   email: string
 
-  @Column({ nullable: true })
+  @Column({ default: '' })
   password: string
+
+  @Column({ default: false })
+  active: boolean
 
   @OneToMany(() => User, user => user.admin)
   @JoinColumn()
