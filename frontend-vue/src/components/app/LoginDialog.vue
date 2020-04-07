@@ -11,7 +11,7 @@
       </v-card-title>
       <v-card-text>
         <v-form
-          v-model="valid"
+          v-model="isValidLogin"
           ref="form"
         >
           <v-text-field
@@ -62,7 +62,7 @@ export default Vue.extend({
   setup: (props, ctx) => {
     const store = ctx.root.$store
     const form = ref(null)
-    const valid = ref(true)
+    const isValidLogin = ref(true)
 
     const email = computed({
       get: (): string => store.state.email,
@@ -79,7 +79,9 @@ export default Vue.extend({
     const loadingLogin = computed(() => store.state.loadingLogin)
 
     const login = () => {
-      store.dispatch('login', {
+      form.value && (form as any).value.validate()
+
+      isValidLogin.value && store.dispatch('login', {
         email: email.value,
         password: password.value
       })
@@ -97,7 +99,7 @@ export default Vue.extend({
 
     return {
       form,
-      valid,
+      isValidLogin,
 
       loginDialog,
       loadingLogin,

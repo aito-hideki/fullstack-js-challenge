@@ -1,6 +1,5 @@
 import { getToken, isEmptyToken, clearToken } from './auth'
 import Axios, { AxiosRequestConfig } from 'axios'
-
 const { VUE_APP_API } = process.env
 
 const sendRequest = (req: AxiosRequestConfig) => Axios.request(req)

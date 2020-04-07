@@ -1,14 +1,14 @@
 import _ from 'lodash'
 
 // Load modules in JSON format
-const requireModule = require.context('.', true, /\.js$/)
+const requireModule = require.context('.', true, /\.ts$/)
 const modules: any = {}
 
 requireModule.keys().forEach(fileName => {
-  if (fileName === './index.js') return
+  if (fileName === './index.ts') return
 
-  // Replace ./ and .js
-  const path = fileName.replace(/(\.\/|\.js)/g, '')
+  // Replace ./ and .ts
+  const path = fileName.replace(/(\.\/|\.ts)/g, '')
   const modulePath = path.split('/')
   const moduleName = modulePath.slice(0, modulePath.length - 1).join('/')
   const imported = modulePath[modulePath.length - 1]

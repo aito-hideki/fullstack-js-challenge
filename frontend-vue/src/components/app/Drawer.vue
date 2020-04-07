@@ -62,8 +62,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { computed } from '@vue/composition-api'
-import { paths } from '@/constants/app'
-import { getToken, isEmptyToken } from '@/lib/auth'
+import { paths } from '@/constants/router'
 import { AuthenticationStatus } from '@/constants/auth'
 
 export default Vue.extend({
@@ -76,14 +75,13 @@ export default Vue.extend({
     })
     const logged = computed(() => store.getters.logged)
     const menuItems = computed(() => {
-      const token = getToken()
       let authStatus: AuthenticationStatus
 
       if (!store.state.profile) authStatus = AuthenticationStatus.UnLogged
       else if (store.state.profile.isAdmin) authStatus = AuthenticationStatus.Admin
       else authStatus = AuthenticationStatus.User
 
-      return paths.filter((item: any) => !item.redirect)
+      return paths.filter((item: any) => !item.redirect && !item.invisible)
         .filter((item: any) => !Object.prototype.hasOwnProperty.call(item, 'role') ||
           authStatus === item.role || (
           authStatus !== AuthenticationStatus.UnLogged &&
