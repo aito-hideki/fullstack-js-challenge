@@ -62,32 +62,41 @@ export class AuthService {
 
   sendActivationLink(email: string) {
     const key = generateHash({ length: 16 })
-    this.activationKeys[key] = email
-    console.log('mail sent')
+    this.activationKeys[key] = { email }
     sendMail(
       email,
       SUPERADMIN_SERVICE,
       'Invitation to VoteAPP',
-      `You were invited to VoteAPP. Here's the link ${CLIENT_BASEURL}/activation/?key=${key}`,
-      `<!DOCTYPE HTML>
-      <html lang="en">
-        <head>
-          <title>
-            Invitation to VoteAPP
-          </title>
-        </head>
-        <body>
-          You were invited to VoteAPP.<br/>
-          <a href="${CLIENT_BASEURL}//activation/?key=${key}">Here's the link</a>
-        </body>
-      </html>`)
+      `You were invited to VoteAPP. Here's the link ${CLIENT_BASEURL}/activation?key=${key}`,
+      `You were invited to VoteAPP.<br/>
+      <a href="${CLIENT_BASEURL}/activation?key=${key}">Here's the link</a>`
+    )
   }
 
   getUserWithActivationKey(key: string): string {
     if (!Object.prototype.hasOwnProperty.call(this.activationKeys, key)) {
       throw new BadRequestException('Activation link is not valid')
     }
-    return this.activationKeys[key]
+    return this.activationKeys[key].email
+  }
+
+  sendAccessKey(key: string) {
+    if (!Object.prototype.hasOwnProperty.call(this.activationKeys, key)) {
+      throw new BadRequestException('Activation link is not valid')
+    }
+    const { email } = this.activationKeys[key]
+    this.activationKeys[key].accessCode = generateHash({
+      length: 6,
+      charset: '0123456789ABCDEF'
+    })
+
+    sendMail(
+      email,
+      SUPERADMIN_SERVICE,
+      'Your access code',
+      `Your access code is ${this.activationKeys[key].accessCode}`,
+      `Your access code is ${this.activationKeys[key].accessCode}`
+    )
   }
 
   async activate(email: string, password: string) {

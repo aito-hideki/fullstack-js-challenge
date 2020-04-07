@@ -25,7 +25,8 @@ export class UserService {
 
     const user = await this.userRepository.save({
       ...profile,
-      password
+      password,
+      active: true
     })
 
     return user ? { ...user, isAdmin: false } : null

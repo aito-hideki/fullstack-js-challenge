@@ -27,6 +27,14 @@ export class AppController {
     return this.authService.activate(email, password)
   }
 
+  @Post('activate/access-code')
+  @HttpCode(200)
+  async sendAccessCode(@Request() req) {
+    const { key } = req.body
+    this.authService.sendAccessKey(key)
+    return 'Access code is sent'
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {

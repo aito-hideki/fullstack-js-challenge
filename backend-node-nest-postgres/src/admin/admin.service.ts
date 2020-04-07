@@ -82,12 +82,13 @@ export class AdminService {
   }
 
   activate = async(email: string, password: string) => {
-    const profile = this.findAdmin(email)
+    const profile = await this.findAdmin(email)
     if (!profile) throw new NotFoundException('Particular Admin not found')
 
     const admin = await this.adminRepository.save({
       ...profile,
-      password
+      password,
+      active: true
     })
 
     return admin ? { ...admin, isAdmin: true } : null
