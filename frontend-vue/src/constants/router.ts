@@ -38,10 +38,24 @@ export const paths = buildRoutes([
   },
   {
     icon: 'mdi-account-tie',
-    name: 'Administration',
+    name: 'Administrators',
     view: 'Admin',
     to: '/admin',
     role: AuthenticationStatus.Admin
+  },
+  {
+    icon: 'mdi-account-group',
+    name: 'Users',
+    view: 'Users',
+    to: '/users',
+    role: AuthenticationStatus.Admin
+  },
+  {
+    name: 'Activation',
+    view: 'Activation',
+    to: '/activation',
+    role: AuthenticationStatus.UnLogged,
+    invisible: true
   },
   {
     path: '*',

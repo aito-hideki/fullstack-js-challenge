@@ -4,6 +4,8 @@ export const saveToken = (token: any) => {
   if (token) {
     if (typeof (token) === 'object' && token.accessToken) {
       localStorage.setItem('voteapp-credential', JSON.stringify(token))
+
+      if (Router.currentRoute.name !== 'Home') Router.push({ name: 'Home' })
     }
   }
 }
@@ -11,9 +13,7 @@ export const saveToken = (token: any) => {
 export const clearToken = () => {
   localStorage.setItem('voteapp-credential', '')
 
-  if (Router.currentRoute.name !== 'Home') {
-    Router.push({ name: 'Home' })
-  }
+  if (Router.currentRoute.name !== 'Home') Router.push({ name: 'Home' })
 }
 
 export const getToken = (): any => {

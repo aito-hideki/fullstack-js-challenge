@@ -22,7 +22,7 @@
         sm="4"
         class="d-none d-sm-flex justify-center align-center"
       >
-        <h2 v-if="logged">Welcome!</h2>
+        <h2 v-if="!logged">Welcome!</h2>
         <h2 v-else-if="isAdmin">Welcome Admin!</h2>
         <h2 v-else>Welcome User!</h2>
       </v-col>
