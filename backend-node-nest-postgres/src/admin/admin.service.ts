@@ -1,7 +1,8 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminRepository } from './admin.repository';
 import { UserRepository } from 'src/user/user.repository';
+import { AuthService } from 'src/auth/auth.service';
 
 const {
   SUPERADMIN_EMAIL,

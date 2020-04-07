@@ -1,8 +1,12 @@
 import { Injectable, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AdminService } from 'src/admin/admin.service'
+import { AdminService } from 'src/admin/admin.service';
 import { UserService } from 'src/user/user.service';
 import { caseConvert } from 'src/utils/case-convert';
+import generateHash from 'random-hash';
+import { sendMail } from 'src/utils/mailer';
+
+const { SUPERADMIN_SERVICE, CLIENT_BASEURL } = process.env
 
 @Injectable()
 export class AuthService {
@@ -54,6 +58,29 @@ export class AuthService {
       accessToken: this.jwtService.sign(user),
       isAdmin
     }, false);
+  }
+
+  sendActivationLink(email: string) {
+    const key = generateHash({ length: 16 })
+    this.activationKeys[key] = email
+    console.log('mail sent')
+    sendMail(
+      email,
+      SUPERADMIN_SERVICE,
+      'Invitation to VoteAPP',
+      `You were invited to VoteAPP. Here's the link ${CLIENT_BASEURL}/activation/?key=${key}`,
+      `<!DOCTYPE HTML>
+      <html lang="en">
+        <head>
+          <title>
+            Invitation to VoteAPP
+          </title>
+        </head>
+        <body>
+          You were invited to VoteAPP.<br/>
+          <a href="${CLIENT_BASEURL}//activation/?key=${key}">Here's the link</a>
+        </body>
+      </html>`)
   }
 
   getUserWithActivationKey(key: string): string {
