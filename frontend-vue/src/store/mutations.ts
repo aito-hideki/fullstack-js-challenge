@@ -1,3 +1,5 @@
+import { isEmptyToken, getToken } from '@/lib/auth'
+
 export default {
   toggleDrawer: (state: any) => {
     state.drawer = !state.drawer
@@ -13,5 +15,8 @@ export default {
   },
   setPassword: (state: any, password: string) => {
     state.password = password
+  },
+  checkLoginStatus: (state: any) => {
+    if (isEmptyToken(getToken())) state.profile = null
   }
 }

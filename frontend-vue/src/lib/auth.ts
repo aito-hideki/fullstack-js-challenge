@@ -5,6 +5,7 @@ export const saveToken = (token: any) => {
     if (typeof (token) === 'object' && token.accessToken) {
       localStorage.setItem('voteapp-credential', JSON.stringify(token))
 
+      Router.app.$store.commit('checkLoginStatus')
       if (Router.currentRoute.name !== 'Home') Router.push({ name: 'Home' })
     }
   }
@@ -13,6 +14,7 @@ export const saveToken = (token: any) => {
 export const clearToken = () => {
   localStorage.setItem('voteapp-credential', '')
 
+  Router.app.$store.commit('checkLoginStatus')
   if (Router.currentRoute.name !== 'Home') Router.push({ name: 'Home' })
 }
 

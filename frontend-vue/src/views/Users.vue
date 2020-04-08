@@ -60,7 +60,7 @@
         </v-dialog>
       </v-row>
       <v-data-table
-        :headers="adminsHeader"
+        :headers="usersHeader"
         :items="items"
         :loading="loadingAdmins"
         item-key="userId"
@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { ref, computed, onMounted, watch } from '@vue/composition-api'
-import { adminsHeader } from '@/constants/tables'
+import { usersHeader } from '@/constants/tables'
 import { isEmail } from '@/lib/utils/validator'
 
 export default {
@@ -84,11 +84,11 @@ export default {
     const isValidInvite = ref(false)
     const email = ref('')
 
-    const items = computed(() => store.state.users.users.map((user: any) => ({
+    const items = computed(() => store.state.users.users.map((user: any) => store.state.profile ? {
       ...user,
       email: store.state.profile.email === user.email ? `${user.email} (You)` : user.email,
       active: user.active ? 'Active' : 'Inactive'
-    })))
+    } : user))
     const loadingAdmins = computed(() => store.state.users.loadingAdmins)
     const loadingInvite = computed(() => store.state.users.loadingInvite)
 
@@ -113,7 +113,7 @@ export default {
       invite,
 
       email,
-      adminsHeader,
+      usersHeader,
       items,
 
       loadingAdmins,

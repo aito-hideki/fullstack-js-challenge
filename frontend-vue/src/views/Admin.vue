@@ -84,11 +84,11 @@ export default {
     const isValidInvite = ref(false)
     const email = ref('')
 
-    const items = computed(() => store.state.admin.admins.map((admin: any) => ({
+    const items = computed(() => store.state.admin.admins.map((admin: any) => store.state.profile ? {
       ...admin,
       email: store.state.profile.email === admin.email ? `${admin.email} (You)` : admin.email,
       active: admin.active ? 'Active' : 'Inactive'
-    })))
+    } : admin))
     const loadingAdmins = computed(() => store.state.admin.loadingAdmins)
     const loadingInvite = computed(() => store.state.admin.loadingInvite)
 
