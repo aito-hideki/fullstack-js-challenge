@@ -14,9 +14,13 @@ export class UserService {
     this.userRepository.delete({});
   }
 
+  exist = async (email: string) => {
+    return await this.adminRepository.count({ email });
+  };
+
   findUser = async (email: string) => {
     const user = await this.userRepository.findOne({ email });
-    return user ? { ...user, isAdmin: false } : null;
+    return this.refactor(user);
   };
 
   createProfile = async (email: string, adminEmail: string) => {
@@ -46,14 +50,16 @@ export class UserService {
       where: { email }
     });
 
-    return res;
+    return this.refactor(res);
   };
 
   async getUsersForAdmin(adminId: number) {
-    return (await this.userRepository.find({
+    const users = await this.userRepository.find({
       relations: ['admin'],
       where: { adminId }
-    })).map(user => ({ ...user, isAdmin: false }));
+    });
+
+    return users.map(user => this.refactor(user));
   }
 
   activate = async(email: string, password: string) => {
@@ -66,6 +72,24 @@ export class UserService {
       active: true
     });
 
-    return user ? { ...user, isAdmin: false } : null;
+    return this.refactor(user);
+  };
+
+  validator = async (email: string, password: string) => {
+    const user = await this.userRepository.find({ email, password });
+    return this.refactor(user);
+  };
+
+  refactor = (user: any) => {
+    if (!user) return user;
+    const { admin } = user;
+
+    if (admin) {
+      const { password, ...adminData } = admin;
+      void(password);
+      user = { ...user, admin: adminData};
+    }
+
+    return { ...user, isAdmin: false };
   };
 }

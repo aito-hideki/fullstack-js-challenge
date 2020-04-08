@@ -19,32 +19,8 @@ export class AuthService {
   private activationKeys: any = {};
 
   async validator(email: string, pwd: string): Promise<any> {
-
-    return (await this.adminValidator(email, pwd)) || (await this.userValidator(email, pwd));
-  }
-
-  async adminValidator(email: string, pwd: string): Promise<any> {
-    const admin = await this.adminService.findAdmin(email);
-
-    if (admin) {
-      const { password, ...result } = admin;
-
-      return password === pwd ? result : null;
-    }
-
-    return null;
-  }
-
-  async userValidator(email: string, pwd: string): Promise<any> {
-    const user = await this.userService.findUser(email);
-
-    if (user) {
-      const { password, ...result } = user;
-
-      return password === pwd ? result : null;
-    }
-
-    return null;
+    return (await this.adminService.validator(email, pwd)) ||
+      (await this.userService.validator(email, pwd));
   }
 
   async login(user: any) {
@@ -102,10 +78,10 @@ export class AuthService {
 
   async activate(email: string, password: string) {
     const admin = await this.adminService.findAdmin(email);
-    if (admin) return this.adminService.activate(email, password);
+    if (admin) return await this.adminService.activate(email, password);
 
     const user = await this.userService.findUser(email);
-    if (user) return this.userService.activate(email, password);
+    if (user) return await this.userService.activate(email, password);
 
     throw new NotFoundException('We cannot find the user');
   }

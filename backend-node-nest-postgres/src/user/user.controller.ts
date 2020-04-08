@@ -36,12 +36,12 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('all')
   async getUsersForAdmin(@Request() req) {
     const { isAdmin, adminId } = req.user;
 
     if (!isAdmin) throw new ForbiddenException('You are not allowed');
 
-    return this.userService.getUsersForAdmin(adminId);
+    return await this.userService.getUsersForAdmin(adminId);
   }
 }

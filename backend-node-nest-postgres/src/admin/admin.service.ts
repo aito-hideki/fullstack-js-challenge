@@ -24,21 +24,23 @@ export class AdminService {
     });
   }
 
+  exist = async (email: string) => {
+    return await this.adminRepository.count({ email });
+  };
+
   findAdmin = async (email: string) => {
     const admin = await this.adminRepository.findOne({ email });
-    return admin ? { ...admin, isAdmin: true } : null;
+
+    return this.refactor(admin);
   };
 
   getAllAdmins = async () => {
-    return (await this.adminRepository.find()).map(profile => ({
-      ...profile,
-      isAdmin: true
-    }));
+    const admins = await this.adminRepository.find();
+
+    return admins.map(admin => this.refactor(admin));
   };
 
-  setupProfile = async (profileInfo) => {
-    const { email, password, active } = profileInfo;
-
+  setupProfile = async ({ email, password, active }: any) => {
     const profile = this.findAdmin(email);
     const admin = await this.adminRepository.save({
       ...(profile || {}),
@@ -47,27 +49,7 @@ export class AdminService {
       active
     });
 
-    return admin ? { ...admin, isAdmin: true } : null;
-  };
-
-  updateProfile = async (profileInfo) => {
-    const {
-      email,
-      password,
-      active
-    } = profileInfo;
-
-    const profile = this.findAdmin(email);
-    if (!profile) throw new NotFoundException('Something went wrong');
-
-    const admin = await this.adminRepository.save({
-      ...profile,
-      email,
-      password,
-      active
-    });
-
-    return admin ? { ...admin, isAdmin: true } : null;
+    return this.refactor(admin);
   };
 
   createProfile = async (email: string) => {
@@ -90,6 +72,27 @@ export class AdminService {
       active: true
     });
 
-    return admin ? { ...admin, isAdmin: true } : null;
+    return this.refactor(admin);
+  };
+
+  validator = async (email: string, password: string) => {
+    const admin = await this.adminRepository.find({ email, password });
+    return this.refactor(admin);
+  };
+
+  refactor = (admin: any) => {
+    if (!admin) return admin;
+
+    const { users } = admin;
+
+    if (users) {
+      admin = { ...admin, users: users.map(user => {
+        const { password, ...userData }  = user;
+        void(password);
+        return userData;
+      }) };
+    }
+
+    return { ...admin, isAdmin: true };
   };
 }

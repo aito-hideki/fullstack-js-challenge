@@ -11,7 +11,7 @@ export class Admin {
   @Column()
   email: string;
 
-  @Column({ default: '' })
+  @Column({ nullable: true })
   password: string;
 
   @Column({ default: false })

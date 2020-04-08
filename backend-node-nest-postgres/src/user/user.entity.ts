@@ -18,14 +18,17 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ default: '' })
   firstName: string;
 
-  @Column({ nullable: true })
+  @Column({ default: '' })
   lastName: string;
 
-  @Column({ nullable: true })
+  @Column({ default: '' })
   mobile: string;
+
+  @Column({ default: false })
+  active: boolean;
 
   @ManyToMany(() => Poll, poll => poll.users)
   polls: Poll[];
