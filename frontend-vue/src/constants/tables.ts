@@ -38,3 +38,26 @@ export const usersHeader = [
     value: 'active'
   }
 ]
+
+export const pollsHeader = [
+  {
+    sortable: true,
+    text: 'Name',
+    value: 'name'
+  },
+  {
+    sortable: true,
+    text: 'Invited',
+    value: 'invite'
+  },
+  {
+    sortable: true,
+    text: 'Answered',
+    value: 'answer'
+  },
+  {
+    text: 'Actions',
+    value: 'actions',
+    align: 'right'
+  }
+]

@@ -61,7 +61,7 @@
       </v-row>
       <v-data-table
         :headers="usersHeader"
-        :items="items"
+        :items="users"
         :loading="loadingAdmins"
         item-key="userId"
       />
@@ -76,19 +76,19 @@ import { isEmail } from '@/lib/utils/validator'
 
 export default {
   name: 'User',
-  setup: (props: any, state: any) => {
-    const store = state.root.$store
+  setup: (props: any, ctx: any) => {
+    const store = ctx.root.$store
 
     const form: any = ref(null)
     const inviteDialog: any = ref(false)
     const isValidInvite = ref(false)
     const email = ref('')
 
-    const items = computed(() => store.state.users.users.map((user: any) => store.state.profile ? {
+    const users = computed(() => store.state.users.users.map((user: any) => ({
       ...user,
       email: store.state.profile.email === user.email ? `${user.email} (You)` : user.email,
       active: user.active ? 'Active' : 'Inactive'
-    } : user))
+    })))
     const loadingAdmins = computed(() => store.state.users.loadingAdmins)
     const loadingInvite = computed(() => store.state.users.loadingInvite)
 
@@ -114,7 +114,7 @@ export default {
 
       email,
       usersHeader,
-      items,
+      users,
 
       loadingAdmins,
       loadingInvite,
