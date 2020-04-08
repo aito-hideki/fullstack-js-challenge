@@ -16,6 +16,8 @@
         <v-form
           v-model="isValidInput"
           ref="form"
+          @submit="requestActivation"
+          onSubmit="return false;"
         >
           <v-text-field
             v-model="code"

@@ -13,6 +13,8 @@
         <v-form
           v-model="isValidLogin"
           ref="form"
+          @submit="login"
+          onSubmit="return false;"
         >
           <v-text-field
             v-model="email"

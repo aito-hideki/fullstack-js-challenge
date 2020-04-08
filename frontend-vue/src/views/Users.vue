@@ -26,6 +26,8 @@
               <v-form
                 v-model="isValidInvite"
                 ref="form"
+                @submit="invite"
+                onSubmit="return false;"
               >
                 <v-text-field
                   v-model="email"

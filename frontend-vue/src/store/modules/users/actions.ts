@@ -6,7 +6,7 @@ export default {
       state.loadingUsers = true
       const { data } = await request({
         method: 'get',
-        url: '/user'
+        url: '/user/all'
       })
       state.users = data
     } catch (err) {
