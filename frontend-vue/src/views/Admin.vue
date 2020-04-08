@@ -74,7 +74,7 @@ import { isEmail } from '@/lib/utils/validator'
 
 export default {
   name: 'Admin',
-  setup: (props, state) => {
+  setup: (props: any, state: any) => {
     const store = state.root.$store
 
     const form: any = ref(null)

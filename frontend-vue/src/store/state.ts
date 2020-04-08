@@ -4,6 +4,7 @@ export default {
   email: '',
   password: '',
 
+  loadingProfile: false,
   loginDialog: false,
   loadingLogin: false
 }

@@ -25,7 +25,7 @@ const buildRoutes = (paths: any[]): RouteConfig[] => {
     ...path,
     path: path.to,
     beforeEnter: authGuardSelector(path),
-    component: (resolve: any) => import(`../views/${path.view}.vue`).then(resolve)
+    component: (resolve: any) => import(`@/views/${path.view}.vue`).then(resolve)
   })
 }
 
@@ -48,6 +48,20 @@ export const paths = buildRoutes([
     name: 'Users',
     view: 'Users',
     to: '/users',
+    role: AuthenticationStatus.Admin
+  },
+  {
+    icon: 'mdi-message-text-outline',
+    name: 'Polls',
+    view: 'Polls',
+    to: '/polls',
+    role: AuthenticationStatus.Admin
+  },
+  {
+    icon: 'mdi-clipboard-text-outline',
+    name: 'Answers',
+    view: 'Answers',
+    to: '/answers',
     role: AuthenticationStatus.Admin
   },
   {

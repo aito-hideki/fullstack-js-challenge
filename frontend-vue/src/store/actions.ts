@@ -1,7 +1,6 @@
 import { saveToken, clearToken } from '@/lib/auth'
 import { toCamelCase } from '@/lib/utils/case-convert'
 import { requestLogin, request } from '@/lib/api'
-import state from './state'
 
 export default {
   login: async ({ state, dispatch }: any, { email, password }: { email: string; password: string }) => {
@@ -24,8 +23,9 @@ export default {
     clearToken()
     state.profile = null
   },
-  getProfile: async () => {
+  getProfile: async ({ state }: any) => {
     try {
+      state.loadingProfile = true
       const { data } = await request({
         method: 'get',
         url: '/profile'
@@ -33,6 +33,8 @@ export default {
       state.profile = data
     } catch (err) {
       console.log('something went wrong')
+    } finally {
+      state.loadingProfile = false
     }
   }
 }

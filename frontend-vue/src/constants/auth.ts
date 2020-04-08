@@ -22,7 +22,7 @@ export const noAuthGuard = (to: any, from: any, next: any) => {
 }
 
 export const adminGuard = (to: any, from: any, next: any) => {
-  const token = getToken()
+  const token: any = getToken()
   const isLogged = !isEmptyToken(token)
 
   if ((!isLogged || !token.isAdmin) && to.name !== 'Home') next({ name: 'Home' })
@@ -30,7 +30,7 @@ export const adminGuard = (to: any, from: any, next: any) => {
 }
 
 export const userGuard = (to: any, from: any, next: any) => {
-  const token = getToken()
+  const token: any = getToken()
   const isLogged = !isEmptyToken(token)
 
   if ((!isLogged || token.isAdmin) && to.name !== 'Home') next({ name: 'Home' })

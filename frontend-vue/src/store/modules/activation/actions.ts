@@ -1,4 +1,5 @@
 import { request } from '@/lib/api'
+import Router from '@/router'
 
 export default {
   sendAccessCode: async ({ state }: any, key: string) => {
@@ -23,6 +24,8 @@ export default {
         url: '/activate',
         data: { key, code, password }
       }, false)
+
+      if (Router.currentRoute.name !== 'Home') Router.push({ name: 'Home' })
     } catch (err) {
       console.log(err)
     } finally {
