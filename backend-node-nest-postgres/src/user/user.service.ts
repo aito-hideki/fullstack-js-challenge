@@ -14,7 +14,6 @@ export class UserService {
     @InjectRepository(PollRepository)
     private readonly pollRepository: PollRepository
   ) {
-    this.userRepository.delete({});
   }
 
   validator = async (email: string, password: string) => {
