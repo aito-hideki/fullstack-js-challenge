@@ -1,24 +1,25 @@
 <template>
   <v-content class="d-flex align-center justify-center">
-    <v-card
-      class="ma-auto"
-      max-width="350px"
+    <v-form
+      v-model="isValidInput"
+      ref="form"
+      @submit="requestActivation"
+      onSubmit="return false;"
     >
-      <v-card-title>
-        <v-spacer/>
-        <span>Activate account</span>
-        <v-spacer/>
-      </v-card-title>
-      <v-card-text>
-        <v-subheader>
-          Activate your account and set your password
-        </v-subheader>
-        <v-form
-          v-model="isValidInput"
-          ref="form"
-          @submit="requestActivation"
-          onSubmit="return false;"
-        >
+      <v-card
+        class="ma-auto"
+        max-width="350px"
+      >
+        <v-card-title>
+          <v-spacer/>
+          <span>Activate account</span>
+          <v-spacer/>
+        </v-card-title>
+        <v-card-text>
+          <v-subheader>
+            Activate your account and set your password
+          </v-subheader>
+
           <v-text-field
             v-model="code"
             color="success"
@@ -43,48 +44,49 @@
             :rules="[!!confirmPwd || 'Please confirm password',
               confirmPwd === pwd || 'Confirmation password must match the password']"
           />
-        </v-form>
-        <a @click="() => { sendAccessCode(); accessCodeNotification = true }">I don't receive access code</a>
-        <v-dialog
-          v-model="accessCodeNotification"
-          max-width="300"
-        >
-          <v-card>
-            <v-card-title>
-              Access code
-            </v-card-title>
-            <v-card-text>
-              We're sending you the access code.<br />
-              You should receive it soon.<br />
-              Please check your inbox.
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="success"
-                text
-                @click="accessCodeNotification = false"
-              >
-                OK
-              </v-btn>
-              <v-spacer />
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn
-          color="success"
-          text
-          :loading="loading"
-          :disabled="!code && !pwd"
-          @click="requestActivation"
-        >
-          Activate
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+
+          <a @click="() => { sendAccessCode(); accessCodeNotification = true }">I don't receive access code</a>
+          <v-dialog
+            v-model="accessCodeNotification"
+            max-width="300"
+          >
+            <v-card>
+              <v-card-title>
+                Access code
+              </v-card-title>
+              <v-card-text>
+                We're sending you the access code.<br />
+                You should receive it soon.<br />
+                Please check your inbox.
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn
+                  color="success"
+                  text
+                  @click="accessCodeNotification = false"
+                >
+                  OK
+                </v-btn>
+                <v-spacer />
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="success"
+            type="submit"
+            text
+            :loading="loading"
+            :disabled="!code && !pwd"
+          >
+            Activate
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-content>
 </template>
 

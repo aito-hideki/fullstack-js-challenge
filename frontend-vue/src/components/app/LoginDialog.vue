@@ -3,19 +3,19 @@
     v-model="loginDialog"
     max-width="350px"
   >
-    <v-card>
-      <v-card-title>
-        <v-spacer/>
-        <span>Login</span>
-        <v-spacer/>
-      </v-card-title>
-      <v-card-text>
-        <v-form
-          v-model="isValidLogin"
-          ref="form"
-          @submit="login"
-          onSubmit="return false;"
-        >
+    <v-form
+      v-model="isValidLogin"
+      ref="form"
+      @submit="login"
+      onSubmit="return false;"
+    >
+      <v-card>
+        <v-card-title>
+          <v-spacer/>
+          <span>Login</span>
+          <v-spacer/>
+        </v-card-title>
+        <v-card-text>
           <v-text-field
             v-model="email"
             color="success"
@@ -31,27 +31,27 @@
             :disabled="loadingLogin"
             :rules="[!!password || 'Password is required']"
           />
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn
-          color="success"
-          text
-          @click="loginDialog = false"
-        >
-          Cancel
-        </v-btn>
-        <v-btn
-          color="success"
-          text
-          :loading="loadingLogin"
-          @click="login"
-        >
-          Login
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="success"
+            text
+            @click="loginDialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="success"
+            text
+            type="submit"
+            :loading="loadingLogin"
+          >
+            Login
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-dialog>
 </template>
 
