@@ -8,7 +8,7 @@ export class Poll {
   @PrimaryGeneratedColumn()
   pollId: number;
 
-  @Column({ nullable: true })
+  @Column()
   name: string;
 
   @Column({ default: 0 })
@@ -17,7 +17,7 @@ export class Poll {
   @Column({ default: 0 })
   answer: number;
 
-  @Column('simple-array', { nullable: true })
+  @Column('simple-array', { default: [] })
   questions: string[];
 
   @ManyToOne(() => Admin, admin => admin.polls)

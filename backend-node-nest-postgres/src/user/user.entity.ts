@@ -11,10 +11,10 @@ export class User {
   @ManyToOne(() => Admin, admin => admin.users)
   admin: Admin;
 
-  @Column({ nullable: true })
+  @Column()
   email: string;
 
-  @Column({ nullable: true })
+  @Column()
   password: string;
 
   @Column({ default: '' })
