@@ -19,7 +19,6 @@ export class AdminService {
     @InjectRepository(PollRepository)
     private readonly pollRepository: PollRepository
   ) {
-    this.adminRepository.delete({});
     this.setupProfile({
       email: SUPERADMIN_EMAIL,
       password: SUPERADMIN_PASSWORD,
