@@ -14,8 +14,26 @@ export class UserService {
     this.userRepository.delete({});
   }
 
+  validator = async (email: string, password: string) => {
+    const user = await this.userRepository.findOne({ email, password });
+    return this.refactor(user);
+  };
+
+  refactor = (user: any) => {
+    if (!user) return user;
+    const { admin } = user;
+
+    if (admin) {
+      const { password, ...adminData } = admin;
+      void(password);
+      user = { ...user, admin: adminData};
+    }
+
+    return { ...user, isAdmin: false };
+  };
+
   exist = async (email: string) => {
-    return await this.adminRepository.count({ email });
+    return !!(await this.adminRepository.count({ email }));
   };
 
   findUser = async (email: string) => {
@@ -73,23 +91,5 @@ export class UserService {
     });
 
     return this.refactor(user);
-  };
-
-  validator = async (email: string, password: string) => {
-    const user = await this.userRepository.find({ email, password });
-    return this.refactor(user);
-  };
-
-  refactor = (user: any) => {
-    if (!user) return user;
-    const { admin } = user;
-
-    if (admin) {
-      const { password, ...adminData } = admin;
-      void(password);
-      user = { ...user, admin: adminData};
-    }
-
-    return { ...user, isAdmin: false };
   };
 }

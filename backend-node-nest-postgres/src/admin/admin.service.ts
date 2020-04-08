@@ -25,18 +25,37 @@ export class AdminService {
   }
 
   exist = async (email: string) => {
-    return await this.adminRepository.count({ email });
+    return !!(await this.adminRepository.exist(email));
+  };
+
+  validator = async (email: string, password: string) => {
+    const admin = await this.adminRepository.findOne({ email, password });
+    return this.refactor(admin);
+  };
+
+  refactor = (admin: any) => {
+    if (!admin) return admin;
+
+    const { users } = admin;
+
+    if (users) {
+      admin = { ...admin, users: users.map(user => {
+        const { password, ...userData }  = user;
+        void(password);
+        return userData;
+      }) };
+    }
+
+    return { ...admin, isAdmin: true };
   };
 
   findAdmin = async (email: string) => {
     const admin = await this.adminRepository.findOne({ email });
-
     return this.refactor(admin);
   };
 
   getAllAdmins = async () => {
     const admins = await this.adminRepository.find();
-
     return admins.map(admin => this.refactor(admin));
   };
 
@@ -73,26 +92,5 @@ export class AdminService {
     });
 
     return this.refactor(admin);
-  };
-
-  validator = async (email: string, password: string) => {
-    const admin = await this.adminRepository.find({ email, password });
-    return this.refactor(admin);
-  };
-
-  refactor = (admin: any) => {
-    if (!admin) return admin;
-
-    const { users } = admin;
-
-    if (users) {
-      admin = { ...admin, users: users.map(user => {
-        const { password, ...userData }  = user;
-        void(password);
-        return userData;
-      }) };
-    }
-
-    return { ...admin, isAdmin: true };
   };
 }
