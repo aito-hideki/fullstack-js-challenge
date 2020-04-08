@@ -9,7 +9,6 @@ export class User {
   id: number;
 
   @ManyToOne(() => Admin, admin => admin.users)
-  @JoinColumn({ name: 'adminId' })
   admin: Admin;
 
   @Column({ nullable: true })

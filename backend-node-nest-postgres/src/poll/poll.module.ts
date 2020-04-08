@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { PollService } from './poll.service';
 
-@Module({})
+@Module({
+  providers: [PollService]
+})
 export class PollModule {}

@@ -2,6 +2,7 @@ import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/commo
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminRepository } from './admin.repository';
 import { UserRepository } from 'src/user/user.repository';
+import { PollRepository } from 'src/poll/poll.repository';
 
 const {
   SUPERADMIN_EMAIL,
@@ -14,7 +15,9 @@ export class AdminService {
     @InjectRepository(AdminRepository)
     private readonly adminRepository: AdminRepository,
     @InjectRepository(UserRepository)
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
+    @InjectRepository(PollRepository)
+    private readonly pollRepository: PollRepository
   ) {
     this.adminRepository.delete({});
     this.setupProfile({
@@ -33,21 +36,7 @@ export class AdminService {
     return this.refactor(admin);
   };
 
-  refactor = (admin: any) => {
-    if (!admin) return admin;
-
-    const { users } = admin;
-
-    if (users) {
-      admin = { ...admin, users: users.map(user => {
-        const { password, ...userData }  = user;
-        void(password);
-        return userData;
-      }) };
-    }
-
-    return { ...admin, isAdmin: true };
-  };
+  refactor = this.adminRepository.refactor
 
   findAdmin = async (email: string) => {
     const admin = await this.adminRepository.findOne({ email });
@@ -93,4 +82,28 @@ export class AdminService {
 
     return this.refactor(admin);
   };
+  
+  createPoll = async (adminId: number, name: string, questions: string[]) => {
+    const admin = await this.adminRepository.findOneOrFail({
+      relations: ['polls'],
+      where: { adminId }
+    })
+    const poll = await this.pollRepository.save({
+      name,
+      questions,
+      admin
+    })
+    await this.adminRepository.save({
+      ...admin,
+      polls: [ ...(admin.polls || []), poll ]
+    })
+
+    return poll;
+  }
+
+  getPolls = async (adminId: number) => {
+    return await this.pollRepository.find({
+      where: { adminId }
+    });
+  }
 }

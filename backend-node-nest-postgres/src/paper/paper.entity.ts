@@ -6,7 +6,7 @@ import { Poll } from 'src/poll/poll.entity';
 @Entity()
 export class Paper {
   @PrimaryGeneratedColumn()
-  id: number;
+  paperId: number;
 
   @ManyToOne(() => Admin, admin => admin.papers)
   admin: Admin;
