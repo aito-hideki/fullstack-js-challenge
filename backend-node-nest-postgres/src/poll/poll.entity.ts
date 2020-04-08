@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToMany, OneToMany, ManyToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, ManyToMany, OneToMany, ManyToOne } from 'typeorm';
 import { Admin } from 'src/admin/admin.entity';
 import { User } from 'src/user/user.entity';
 import { Paper } from 'src/paper/paper.entity';
@@ -9,11 +9,11 @@ export class Poll {
   id: number;
 
   @ManyToOne(() => Admin, admin => admin.polls)
-  admin: Admin
+  admin: Admin;
 
   @ManyToMany(() => User, user => user.polls)
-  users: User[]
+  users: User[];
   
   @OneToMany(() => Paper, paper => paper.poll)
-  papers: Paper[]
+  papers: Paper[];
 }

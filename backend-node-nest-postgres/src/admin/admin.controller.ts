@@ -1,4 +1,4 @@
-import { Controller, Body, Request, Get, Post, UseGuards, ForbiddenException } from '@nestjs/common';
+import { Controller, Request, Get, Post, UseGuards, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from './admin.entity';
 import { AdminRepository } from './admin.repository';
@@ -17,29 +17,29 @@ export class AdminController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Request() req, @Body() profileInfo) {
-    const { isAdmin } = req.user
-    if (!isAdmin) throw new ForbiddenException('You are not allowed')
+  async create(@Request() req) {
+    const { isAdmin } = req.user;
+    if (!isAdmin) throw new ForbiddenException('You are not allowed');
 
-    const { email } = profileInfo
-    const admin = this.adminService.createProfile({ email })
+    const { email } = req.body;
+    const admin = this.adminService.createProfile(email);
 
     if (admin) {
-      this.authService.sendActivationLink(email)
+      this.authService.sendActivationLink(email);
       return {
         ...admin,
         isAdmin: true
-      }
+      };
     }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('all')
   async getAllAdmins(@Request() req) {
-    const { isAdmin } = req.user
+    const { isAdmin } = req.user;
 
-    if (!isAdmin) throw new ForbiddenException('You are not allowed')
+    if (!isAdmin) throw new ForbiddenException('You are not allowed');
 
-    return this.adminService.getAllAdmins()
+    return this.adminService.getAllAdmins();
   }
 }
