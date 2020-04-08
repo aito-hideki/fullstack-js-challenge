@@ -1,7 +1,7 @@
 <template>
   <v-content class="home">
     <v-container class="pa-6">
-      <h1 class="text-center mb-4">Full Stack JavaScrip Coding Challenge</h1>
+      <h1 class="text-center mb-4">Full Stack JavaScript Coding Challenge</h1>
       <div class="d-flex align-start flex-wrap align-center">
         <v-col cols="6" sm="4" md="3" lg="2" xl="2">
           <v-img src="/logos/node.svg" width="128" height="128" contain />
