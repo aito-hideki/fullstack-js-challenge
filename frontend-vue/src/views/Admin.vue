@@ -16,17 +16,19 @@
               Invite an Admin
             </v-btn>
           </template>
-          <v-card>
-            <v-card-title>
-              <v-spacer/>
-              <span>Invite an Admin</span>
-              <v-spacer/>
-            </v-card-title>
-            <v-card-text>
-              <v-form
-                v-model="isValidInvite"
-                ref="form"
-              >
+          <v-form
+            v-model="isValidInvite"
+            ref="form"
+            @submit="invite"
+            onSubmit="return false;"
+          >
+            <v-card>
+              <v-card-title>
+                <v-spacer/>
+                <span>Invite an Admin</span>
+                <v-spacer/>
+              </v-card-title>
+              <v-card-text>
                 <v-text-field
                   v-model="email"
                   color="success"
@@ -34,27 +36,27 @@
                   :disabled="loadingInvite"
                   :rules="[!!email || 'Email is required', isEmail(email) || 'This is not valid email']"
                 />
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="success"
-                text
-                @click="inviteDialog = false"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="success"
-                text
-                :loading="loadingInvite"
-                @click="invite"
-              >
-                Invite
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn
+                  color="success"
+                  text
+                  @click="inviteDialog = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
+                  color="success"
+                  type="submit"
+                  text
+                  :loading="loadingInvite"
+                >
+                  Invite
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-form>
         </v-dialog>
       </v-row>
       <v-data-table
