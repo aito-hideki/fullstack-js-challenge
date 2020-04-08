@@ -6,7 +6,7 @@ import { caseConvert } from 'src/utils/case-convert';
 import generateHash from 'random-hash';
 import { sendMail } from 'src/utils/mailer';
 
-const { SUPERADMIN_SERVICE, CLIENT_BASEURL } = process.env
+const { SUPERADMIN_SERVICE, CLIENT_BASEURL } = process.env;
 
 @Injectable()
 export class AuthService {
@@ -16,17 +16,18 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  private activationKeys: any = {}
+  private activationKeys: any = {};
 
   async validator(email: string, pwd: string): Promise<any> {
-    return await this.adminValidator(email, pwd) || await this.userValidator(email, pwd);
+
+    return (await this.adminValidator(email, pwd)) || (await this.userValidator(email, pwd));
   }
 
   async adminValidator(email: string, pwd: string): Promise<any> {
-    const user = await this.adminService.findAdmin(email)
+    const admin = await this.adminService.findAdmin(email);
 
-    if (user) {
-      const { password, ...result } = user;
+    if (admin) {
+      const { password, ...result } = admin;
 
       return password === pwd ? result : null;
     }
@@ -47,12 +48,12 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const { email, password } = user
+    const { email, password } = user;
 
     const profile = await this.validator(email, password);
-    if (!profile) throw new UnauthorizedException('Email or Password is not valid')
+    if (!profile) throw new UnauthorizedException('Email or Password is not valid');
 
-    const { isAdmin } = profile
+    const { isAdmin } = profile;
 
     return caseConvert({
       accessToken: this.jwtService.sign(user),
@@ -61,8 +62,8 @@ export class AuthService {
   }
 
   sendActivationLink(email: string) {
-    const key = generateHash({ length: 16 })
-    this.activationKeys[key] = { email }
+    const key = generateHash({ length: 16 });
+    this.activationKeys[key] = { email };
     sendMail(
       email,
       SUPERADMIN_SERVICE,
@@ -70,25 +71,25 @@ export class AuthService {
       `You were invited to VoteAPP. Here's the link ${CLIENT_BASEURL}/activation?key=${key}`,
       `You were invited to VoteAPP.<br/>
       <a href="${CLIENT_BASEURL}/activation?key=${key}">Here's the link</a>`
-    )
+    );
   }
 
   getUserWithActivationKey(key: string): string {
     if (!Object.prototype.hasOwnProperty.call(this.activationKeys, key)) {
-      throw new BadRequestException('Activation link is not valid')
+      throw new BadRequestException('Activation link is not valid');
     }
-    return this.activationKeys[key].email
+    return this.activationKeys[key].email;
   }
 
   sendAccessKey(key: string) {
     if (!Object.prototype.hasOwnProperty.call(this.activationKeys, key)) {
-      throw new BadRequestException('Activation link is not valid')
+      throw new BadRequestException('Activation link is not valid');
     }
-    const { email } = this.activationKeys[key]
+    const { email } = this.activationKeys[key];
     this.activationKeys[key].accessCode = generateHash({
       length: 6,
       charset: '0123456789ABCDEF'
-    })
+    });
 
     sendMail(
       email,
@@ -96,16 +97,16 @@ export class AuthService {
       'Your access code',
       `Your access code is ${this.activationKeys[key].accessCode}`,
       `Your access code is ${this.activationKeys[key].accessCode}`
-    )
+    );
   }
 
   async activate(email: string, password: string) {
-    const admin = this.adminService.findAdmin(email)
-    if (admin) return this.adminService.activate(email, password)
+    const admin = await this.adminService.findAdmin(email);
+    if (admin) return this.adminService.activate(email, password);
 
-    const user = this.userService.findUser(email)
-    if (user) return this.userService.activate(email, password)
+    const user = await this.userService.findUser(email);
+    if (user) return this.userService.activate(email, password);
 
-    throw new NotFoundException('We cannot find the user')
+    throw new NotFoundException('We cannot find the user');
   }
 }

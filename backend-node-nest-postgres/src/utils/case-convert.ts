@@ -1,29 +1,29 @@
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 const toCamelCase = (res: any) => {
   return Object.keys(res).reduce((acc: any, cur: string) => {
-    acc[_.camelCase(cur)] = caseConvert(res[cur], true)
-    return acc
-  }, {})
-}
+    acc[_.camelCase(cur)] = caseConvert(res[cur], true);
+    return acc;
+  }, {});
+};
 
 const toSnakecase = (res: any) => {
   return Object.keys(res).reduce((acc: any, cur: string) => {
-    acc[_.snakeCase(cur)] = caseConvert(res[cur], false)
-    return acc
-  }, {})
-}
+    acc[_.snakeCase(cur)] = caseConvert(res[cur], false);
+    return acc;
+  }, {});
+};
 
 export const caseConvert = (obj: any, toCamel = true): any => {
   if (typeof obj === 'object') {
-    if (!obj) { return obj }
-    if (Array.isArray(obj)) { return obj.map(e => caseConvert(e, toCamel)) }
+    if (!obj) { return obj; }
+    if (Array.isArray(obj)) { return obj.map(e => caseConvert(e, toCamel)); }
 
     if (toCamel) {
-      return toCamelCase(obj)
+      return toCamelCase(obj);
     } else {
-      return toSnakecase(obj)
+      return toSnakecase(obj);
     }
   }
-  return obj
-}
+  return obj;
+};
