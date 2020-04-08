@@ -18,7 +18,6 @@ export class Admin {
   active: boolean;
 
   @OneToMany(() => User, user => user.admin)
-  @JoinColumn()
   users: User[];
 
   @OneToMany(() => Poll, poll => poll.admin)

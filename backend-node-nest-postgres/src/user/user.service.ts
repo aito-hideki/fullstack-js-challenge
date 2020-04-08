@@ -2,6 +2,7 @@ import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/commo
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { AdminRepository } from 'src/admin/admin.repository';
+import { PollRepository } from 'src/poll/poll.repository';
 
 @Injectable()
 export class UserService {
@@ -9,7 +10,9 @@ export class UserService {
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
     @InjectRepository(AdminRepository)
-    private readonly adminRepository: AdminRepository
+    private readonly adminRepository: AdminRepository,
+    @InjectRepository(PollRepository)
+    private readonly pollRepository: PollRepository
   ) {
     this.userRepository.delete({});
   }
@@ -19,18 +22,7 @@ export class UserService {
     return this.refactor(user);
   };
 
-  refactor = (user: any) => {
-    if (!user) return user;
-    const { admin } = user;
-
-    if (admin) {
-      const { password, ...adminData } = admin;
-      void(password);
-      user = { ...user, admin: adminData};
-    }
-
-    return { ...user, isAdmin: false };
-  };
+  refactor = this.userRepository.refactor
 
   exist = async (email: string) => {
     return !!(await this.adminRepository.count({ email }));
@@ -92,4 +84,8 @@ export class UserService {
 
     return this.refactor(user);
   };
+
+  getPolls = async (userId: number) => await this.pollRepository.find({
+    where: { userId }
+  });
 }
