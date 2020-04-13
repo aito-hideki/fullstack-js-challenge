@@ -92,9 +92,7 @@ export default {
     const loadingAdmins = computed(() => store.state.admin.loadingAdmins)
     const loadingInvite = computed(() => store.state.admin.loadingInvite)
 
-    watch(() => loadingInvite.value, (loading) => {
-      if (loading) inviteDialog.value = false
-    })
+    watch(() => loadingInvite.value, (loading) => { if (loading) inviteDialog.value = false })
 
     const invite = () => {
       form.value && (form as any).value.validate()
