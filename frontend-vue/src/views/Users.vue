@@ -86,7 +86,7 @@ export default {
 
     const users = computed(() => store.state.users.users.map((user: any) => ({
       ...user,
-      email: store.state.profile.email === user.email ? `${user.email} (You)` : user.email,
+      email: store.state.profile && store.state.profile.email === user.email ? `${user.email} (You)` : user.email,
       active: user.active ? 'Active' : 'Inactive'
     })))
     const loadingAdmins = computed(() => store.state.users.loadingAdmins)

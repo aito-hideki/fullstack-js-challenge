@@ -139,6 +139,45 @@
       >
         <template v-slot:item.actions="{ item }">
           <td class="d-flex flex-row-reverse align-center">
+            <v-dialog width="800">
+              <template v-slot:activator="{ on: dialog }">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on: tooltip }">
+                    <v-btn
+                      icon
+                      v-on="{ ...tooltip, ...dialog }"
+                    >
+                      <v-icon color="info">mdi-information</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Poll Status</span>
+                </v-tooltip>
+              </template>
+
+                <v-card>
+                  <v-card-title>
+                    {{ item.name }}
+                  </v-card-title>
+                  <v-card-text>
+                    <v-list>
+                      <v-list-item
+                        v-for="(question, qi) in item.questions"
+                        :key="`question-${item.pollId}-${qi}`"
+                      >
+                        <v-list-item-title>
+                          {{ question[0] }}
+                        </v-list-item-title>
+                        <v-list-item-action class="d-block">
+                          <span class="success--text">{{ question[1] }}</span>
+                          <span class="primary--text">/</span>
+                          <span class="error--text">{{ question[2] }}</span>
+                        </v-list-item-action>
+                      </v-list-item>
+                    </v-list>
+                  </v-card-text>
+                </v-card>
+            </v-dialog>
+
             <v-form ref="sendPollForm">
               <v-dialog
                 v-model="sendPollDlg"
@@ -151,7 +190,7 @@
                         icon
                         v-on="{ ...tooltip, ...dialog }"
                       >
-                        <v-icon color="info">mdi-email-send</v-icon>
+                        <v-icon color="primary">mdi-email-send</v-icon>
                       </v-btn>
                     </template>
                     <span>Send Poll</span>
@@ -219,7 +258,20 @@ export default Vue.extend({
     const newPoll = ref('')
     const newPolls: Ref<string[]> = ref([])
 
-    const polls = computed(() => store.state.polls.polls)
+    const polls = computed(() => store.state.polls.polls.map((poll: any) => {
+      return {
+        ...poll,
+        userCount: poll.users ? poll.users.length : 0,
+        answerCount: poll.papers ? poll.papers.length : 0,
+        questions: poll.questions.map((quest: string, qId: number) => {
+          let posCnt = 0
+          let negCnt = 0
+          poll.papers.forEach((q: any) => q.answers[qId] ? ++posCnt : ++negCnt)
+
+          return [quest, posCnt, negCnt]
+        })
+      }
+    }))
     const loadingPolls = computed(() => store.state.polls.loadingPolls)
     const loadingCreatePoll = computed(() => store.state.polls.loadingCreatePoll)
 

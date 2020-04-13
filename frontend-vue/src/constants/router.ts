@@ -65,13 +65,6 @@ export const paths = buildRoutes([
     role: AuthenticationStatus.User
   },
   {
-    icon: 'mdi-clipboard-text-outline',
-    name: 'Answers',
-    view: 'Answers',
-    to: '/answers',
-    role: AuthenticationStatus.Admin
-  },
-  {
     name: 'Activation',
     view: 'Activation',
     to: '/activation',
