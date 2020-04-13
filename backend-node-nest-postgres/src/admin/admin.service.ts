@@ -1,8 +1,11 @@
-import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, ForbiddenException, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminRepository } from './admin.repository';
 import { UserRepository } from 'src/user/user.repository';
 import { PollRepository } from 'src/poll/poll.repository';
+import { sendMail } from 'src/utils/mailer';
+
+const { SUPERADMIN_SERVICE, CLIENT_BASEURL } = process.env;
 
 const {
   SUPERADMIN_EMAIL,
@@ -48,9 +51,9 @@ export class AdminService {
   };
 
   setupProfile = async ({ email, password, active }: any) => {
-    const profile = this.findAdmin(email);
+    if (await this.exist(email)) return;
+
     const admin = await this.adminRepository.save({
-      ...(profile || {}),
       email,
       password,
       active
@@ -92,17 +95,40 @@ export class AdminService {
       questions,
       admin
     })
-    await this.adminRepository.save({
-      ...admin,
-      polls: [ ...(admin.polls || []), poll ]
-    })
 
     return poll;
   }
 
   getPolls = async (adminId: number) => {
     return await this.pollRepository.find({
+      relations: ['users', 'papers'],
       where: { adminId }
     });
+  }
+
+  inviteToPoll = async (adminId: number, pollId: number, email: string) => {
+    if (!await this.userRepository.exist(email, adminId)) throw new NotFoundException('No User Found')
+
+    const poll = await this.pollRepository.findOneOrFail(pollId)
+    const user = await this.userRepository.findOneOrFail({
+      relations: ['polls'],
+      where: { email }
+    })
+
+    if (user.polls.filter(p => p.pollId === poll.pollId)) {
+      throw new UnprocessableEntityException('This user is already invited to the poll.')
+    }
+
+    user.polls.push(poll)
+    await this.userRepository.save(user)
+
+    sendMail(
+      email,
+      SUPERADMIN_SERVICE,
+      'Please answer this Poll',
+      `Answer the Poll "${poll.name}"`,
+      `Answer the Poll - <strong>${poll.name}</strong><br />
+      <a href="${CLIENT_BASEURL}/user-polls/${poll.pollId}">Here's the link</a>`
+    );
   }
 }

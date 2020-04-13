@@ -8,10 +8,10 @@ export class Paper {
   @PrimaryGeneratedColumn()
   paperId: number;
 
-  @ManyToOne(() => Admin, admin => admin.papers)
+  @ManyToOne(() => Admin, admin => admin.papers, { cascade: true })
   admin: Admin;
 
-  @ManyToOne(() => User, user => user.papers)
+  @ManyToOne(() => User, user => user.papers, { cascade: true })
   user: User;
 
   @ManyToOne(() => Poll, poll => poll.papers)

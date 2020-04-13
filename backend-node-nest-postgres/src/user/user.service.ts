@@ -50,16 +50,7 @@ export class UserService {
       active: false
     });
 
-    const { users = [] } = admin;
-    admin.users = [...users, user];
-    await this.adminRepository.save(admin);
-
-    const res = await this.userRepository.findOne({
-      relations: ['admin'],
-      where: { email }
-    });
-
-    return this.refactor(res);
+    return this.refactor(user);
   };
 
   async getUsersForAdmin(adminId: number) {

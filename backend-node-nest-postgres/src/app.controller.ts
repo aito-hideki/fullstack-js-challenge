@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Post, UseGuards, HttpCode, ForbiddenException } from '@nestjs/common';
+import { Controller, Request, Get, Post, UseGuards, HttpCode, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { AdminService } from './admin/admin.service';
@@ -51,7 +51,7 @@ export class AppController {
   @Post('poll')
   async createPoll(@Request() req) {
     const { isAdmin, adminId } = req.user;
-    if (!isAdmin) new ForbiddenException('You don\'t have permission to create a poll')
+    if (!isAdmin) new ForbiddenException('You don\'t have permission')
 
     const { name, questions } = req.body
 
@@ -65,5 +65,16 @@ export class AppController {
 
     if (isAdmin) return this.adminService.getPolls(adminId)
     return this.userService.getPolls(userId)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/poll/:id/invite')
+  async inviteToPoll(@Request() req) {
+    if (!req.user.isAdmin) throw new ForbiddenException('You don\'t have permission')
+    if (isNaN(+req.params.id)) throw new ForbiddenException('Invalid Poll ID')
+    if (!req.body.email) throw new BadRequestException('Email is not valid')
+
+    await this.adminService.inviteToPoll(req.user.adminId, req.params.id, req.body.email)
+    return true;
   }
 }

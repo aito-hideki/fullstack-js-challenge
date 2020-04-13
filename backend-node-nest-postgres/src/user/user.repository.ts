@@ -3,8 +3,8 @@ import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  exist = async (email: string) => {
-    return !!(await this.count({ email }));
+  exist = async (email: string, adminId?: number) => {
+    return !!(await this.count({ where: { email, adminId } }));
   }
 
   refactor = (user: any) => {

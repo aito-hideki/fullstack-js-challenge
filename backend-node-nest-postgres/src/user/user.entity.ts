@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToMany, ManyToOne, OneToMany, Column, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToMany, ManyToOne, OneToMany, Column, JoinTable } from 'typeorm';
 import { Admin } from 'src/admin/admin.entity';
 import { Poll } from 'src/poll/poll.entity';
 import { Paper } from 'src/paper/paper.entity';
@@ -6,9 +6,9 @@ import { Paper } from 'src/paper/paper.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  userId: number;
 
-  @ManyToOne(() => Admin, admin => admin.users)
+  @ManyToOne(() => Admin, admin => admin.users, { cascade: true })
   admin: Admin;
 
   @Column()
@@ -29,7 +29,12 @@ export class User {
   @Column({ default: false })
   active: boolean;
 
-  @ManyToMany(() => Poll, poll => poll.users)
+  @ManyToMany(() => Poll, poll => poll.users, { cascade: ['insert'] })
+  @JoinTable({
+    name: 'user_poll',
+    joinColumns: [{ name: 'userId' }],
+    inverseJoinColumns: [{ name: 'pollId' }]
+  })
   polls: Poll[];
 
   @OneToMany(() => Paper, paper => paper.user)
