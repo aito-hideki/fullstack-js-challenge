@@ -20,12 +20,12 @@ export const pollsHeader = [
   {
     sortable: true,
     text: 'Invited',
-    value: 'invite'
+    value: 'userCount'
   },
   {
     sortable: true,
     text: 'Answered',
-    value: 'answer'
+    value: 'answerCount'
   },
   {
     text: 'Actions',
@@ -71,7 +71,7 @@ export const userPollsHeader = [
   {
     sortable: true,
     text: 'Questions',
-    value: 'questions'
+    value: 'quests'
   },
   {
     text: 'Actions',

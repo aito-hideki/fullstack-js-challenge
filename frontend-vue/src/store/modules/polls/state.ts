@@ -3,5 +3,6 @@ export default {
 
   loadingPolls: false,
   loadingSendPoll: false,
-  loadingCreatePoll: false
+  loadingCreatePoll: false,
+  loadingSubmitPoll: false
 }

@@ -44,5 +44,21 @@ export default {
     } finally {
       state.loadingSendPoll = false
     }
+  },
+  submitAnswer: async ({ state }: any, { pollId, answers }: any) => {
+    try {
+      state.loadingSubmitPoll = true
+      await request({
+        method: 'post',
+        url: `/poll/${pollId}`,
+        data: {
+          answers
+        }
+      })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      state.loadingSubmitPoll = false
+    }
   }
 }
