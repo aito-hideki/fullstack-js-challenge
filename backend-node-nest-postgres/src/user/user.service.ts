@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { AdminRepository } from 'src/admin/admin.repository';
 import { PollRepository } from 'src/poll/poll.repository';
-import { PaperRepository } from 'src/paper/paperl.repository';
+import { PaperRepository } from 'src/paper/paper.repository';
 
 @Injectable()
 export class UserService {

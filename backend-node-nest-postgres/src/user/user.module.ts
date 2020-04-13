@@ -10,7 +10,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { Poll } from 'src/poll/poll.entity';
 import { PollRepository } from 'src/poll/poll.repository';
 import { Paper } from 'src/paper/paper.entity';
-import { PaperRepository } from 'src/paper/paperl.repository';
+import { PaperRepository } from 'src/paper/paper.repository';
 
 @Module({
   imports: [
