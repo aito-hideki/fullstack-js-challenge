@@ -9,12 +9,15 @@ import { AdminRepository } from 'src/admin/admin.repository';
 import { AuthModule } from 'src/auth/auth.module';
 import { Poll } from 'src/poll/poll.entity';
 import { PollRepository } from 'src/poll/poll.repository';
+import { Paper } from 'src/paper/paper.entity';
+import { PaperRepository } from 'src/paper/paperl.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, UserRepository]),
     TypeOrmModule.forFeature([Admin, AdminRepository]),
     TypeOrmModule.forFeature([Poll, PollRepository]),
+    TypeOrmModule.forFeature([Paper, PaperRepository]),
     forwardRef(() => AuthModule)
   ],
   exports: [UserService],

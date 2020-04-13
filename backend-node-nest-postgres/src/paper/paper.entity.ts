@@ -14,7 +14,7 @@ export class Paper {
   @ManyToOne(() => User, user => user.papers, { cascade: true })
   user: User;
 
-  @ManyToOne(() => Poll, poll => poll.papers)
+  @ManyToOne(() => Poll, poll => poll.papers, { cascade: true })
   poll: Poll;
 
   @Column('boolean', { array: true })

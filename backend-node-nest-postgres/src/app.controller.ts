@@ -77,4 +77,14 @@ export class AppController {
     await this.adminService.inviteToPoll(req.user.adminId, req.params.id, req.body.email)
     return true;
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/poll/:id')
+  async submitAnswer(@Request() req) {
+    if (req.user.isAdmin) throw new ForbiddenException('You don\'t have permission')
+    if (isNaN(+req.params.id)) throw new ForbiddenException('Invalid Poll ID')
+
+    await this.userService.submitAnswer(req.user.userId, req.params.id, req.body.answers)
+    return true;
+  }
 }

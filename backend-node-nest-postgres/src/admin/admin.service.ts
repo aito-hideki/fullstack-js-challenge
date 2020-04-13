@@ -128,7 +128,7 @@ export class AdminService {
       'Please answer this Poll',
       `Answer the Poll "${poll.name}"`,
       `Answer the Poll - <strong>${poll.name}</strong><br />
-      <a href="${CLIENT_BASEURL}/user-polls/${poll.pollId}">Here's the link</a>`
+      <a href="${CLIENT_BASEURL}/user-polls">Here's the link</a>`
     );
   }
 }

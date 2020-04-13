@@ -8,7 +8,7 @@ export class User {
   @PrimaryGeneratedColumn()
   userId: number;
 
-  @ManyToOne(() => Admin, admin => admin.users, { cascade: true })
+  @ManyToOne(() => Admin, admin => admin.users)
   admin: Admin;
 
   @Column()
@@ -29,7 +29,7 @@ export class User {
   @Column({ default: false })
   active: boolean;
 
-  @ManyToMany(() => Poll, poll => poll.users, { cascade: ['insert'] })
+  @ManyToMany(() => Poll, poll => poll.users, { cascade: true })
   @JoinTable({
     name: 'user_poll',
     joinColumns: [{ name: 'userId' }],

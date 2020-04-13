@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { AdminRepository } from 'src/admin/admin.repository';
 import { PollRepository } from 'src/poll/poll.repository';
+import { PaperRepository } from 'src/paper/paperl.repository';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,9 @@ export class UserService {
     @InjectRepository(AdminRepository)
     private readonly adminRepository: AdminRepository,
     @InjectRepository(PollRepository)
-    private readonly pollRepository: PollRepository
+    private readonly pollRepository: PollRepository,
+    @InjectRepository(PaperRepository)
+    private readonly paperRepository: PaperRepository
   ) {
   }
 
@@ -76,6 +79,35 @@ export class UserService {
   };
 
   getPolls = async (userId: number) => await this.pollRepository.find({
-    where: { userId }
+    where: { users: { userId } }
   });
+
+  submitAnswer = async (userId: number, pollId: number, answers: boolean[]) => {
+    console.log('----------------')
+    console.log(userId, pollId, answers)
+    if (!await this.userRepository.count({ userId })) throw new NotFoundException('No User Found')
+
+    const poll = await this.pollRepository.findOneOrFail({
+      relations: ['users'],
+      where: { pollId }
+    })
+    const user = await this.userRepository.findOneOrFail({
+      relations: ['admin', 'polls'],
+      where: { userId }
+    })
+    const { admin, polls } = user
+    const { users } = poll
+
+    await this.paperRepository.save({
+      admin,
+      user,
+      poll,
+      answers
+    })
+
+    await this.userRepository.save({
+      userId,
+      polls: polls.filter(poll => poll.pollId !== pollId)
+    })
+  }
 }
