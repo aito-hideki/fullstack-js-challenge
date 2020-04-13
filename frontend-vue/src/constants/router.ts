@@ -58,6 +58,13 @@ export const paths = buildRoutes([
     role: AuthenticationStatus.Admin
   },
   {
+    icon: 'mdi-message-text-outline',
+    name: 'Polls',
+    view: 'UserPolls',
+    to: '/user-polls',
+    role: AuthenticationStatus.User
+  },
+  {
     icon: 'mdi-clipboard-text-outline',
     name: 'Answers',
     view: 'Answers',

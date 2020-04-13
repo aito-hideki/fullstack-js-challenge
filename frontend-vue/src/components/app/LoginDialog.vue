@@ -95,9 +95,7 @@ export default Vue.extend({
 
       form.value && (form as any).value.reset()
     })
-    watch(() => store.getters.logged, (isLogged) => {
-      if (isLogged) store.commit('openLoginDialog', false)
-    })
+    watch(() => store.getters.logged, (isLogged) => { if (isLogged) store.commit('openLoginDialog', false) })
 
     return {
       form,

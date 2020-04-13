@@ -30,5 +30,19 @@ export default {
     } finally {
       state.loadingCreatePoll = false
     }
+  },
+  invite: async ({ state }: any, { pollId, email }: any) => {
+    try {
+      state.loadingSendPoll = true
+      await request({
+        method: 'post',
+        url: `/poll/${pollId}/invite`,
+        data: { email }
+      })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      state.loadingSendPoll = false
+    }
   }
 }

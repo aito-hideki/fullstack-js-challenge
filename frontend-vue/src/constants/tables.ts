@@ -11,6 +11,29 @@ export const adminsHeader = [
   }
 ]
 
+export const pollsHeader = [
+  {
+    sortable: true,
+    text: 'Name',
+    value: 'name'
+  },
+  {
+    sortable: true,
+    text: 'Invited',
+    value: 'invite'
+  },
+  {
+    sortable: true,
+    text: 'Answered',
+    value: 'answer'
+  },
+  {
+    text: 'Actions',
+    value: 'actions',
+    align: 'right'
+  }
+]
+
 export const usersHeader = [
   {
     sortable: true,
@@ -39,7 +62,7 @@ export const usersHeader = [
   }
 ]
 
-export const pollsHeader = [
+export const userPollsHeader = [
   {
     sortable: true,
     text: 'Name',
@@ -47,13 +70,8 @@ export const pollsHeader = [
   },
   {
     sortable: true,
-    text: 'Invited',
-    value: 'invite'
-  },
-  {
-    sortable: true,
-    text: 'Answered',
-    value: 'answer'
+    text: 'Questions',
+    value: 'questions'
   },
   {
     text: 'Actions',

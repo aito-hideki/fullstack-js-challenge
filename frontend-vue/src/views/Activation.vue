@@ -131,9 +131,7 @@ export default Vue.extend({
       ctx.root.$router.replace({ query: {} })
     })
 
-    watch(() => ctx.root.$route.params, () => {
-      sendAccessCode()
-    })
+    watch(() => ctx.root.$route.params, () => sendAccessCode())
 
     return {
       form,

@@ -1,1 +1,1 @@
-export const isEmail = (email: string) => /.+@.+\..+/.test(email)
+export const isEmail = (email: string) => email && /.+@.+\..+/.test(email)
