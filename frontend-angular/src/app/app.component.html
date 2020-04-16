@@ -9,20 +9,20 @@
       <h1>Full Stack JS Challenge</h1>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzSelectable]="false">
-      <li nz-menu-item nzMatchRouter routerLink="/">
-        <i nz-icon nzType="home" nzTheme="fill"></i>
+      <li nz-menu-item routerLink="">
+        <i nz-icon nzType="home" nzTheme="outline"></i>
         Home
       </li>
-      <li *ngIf="(isAdmin$ | async)" nz-menu-item  nzMatchRouter routerLink="/admins">
-        <i nz-icon nzType="usergroup-add" nzTheme="fill"></i>
+      <li *ngIf="(isAdmin$ | async)" nz-menu-item routerLink="admins">
+        <i nz-icon nzType="usergroup-add" nzTheme="outline"></i>
         Admins
       </li>
-      <li *ngIf="(isAdmin$ | async)" nz-menu-item  nzMatchRouter routerLink="/users">
-        <i nz-icon nzType="team" nzTheme="fill"></i>
+      <li *ngIf="(isAdmin$ | async)" nz-menu-item routerLink="users">
+        <i nz-icon nzType="team" nzTheme="outline"></i>
         Users
       </li>
-      <li *ngIf="(isLogged$ | async)" nz-menu-item  nzMatchRouter routerLink="/polls">
-        <i nz-icon nzType="solution" nzTheme="fill"></i>
+      <li *ngIf="(isLogged$ | async)" nz-menu-item routerLink="polls">
+        <i nz-icon nzType="solution" nzTheme="outline"></i>
         Polls
       </li>
       <li *ngIf="!(isLogged$ | async)" nz-menu-item  (click)="openLoginDialog()">
@@ -64,7 +64,7 @@
     </nz-form-item>
 
     <ng-template #modalFooter>
-      <button nz-button nzType="primary" [disabled]="!validateForm.valid" [nzLoading]="false" (clic)="onLogin()">Login</button>
+      <button nz-button nzType="primary" [disabled]="!validateForm.valid" [nzLoading]="(isLogging$ | async)" (click)="onLogin()">Login</button>
     </ng-template>
   </form>
 </nz-modal>

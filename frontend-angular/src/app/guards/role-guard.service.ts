@@ -15,8 +15,6 @@ export class RoleGuard implements CanActivate {
     const user = this.authService.decode();
     const { isLogged = true, isAdmin = true } = next.data;
 
-    console.log(isLogged, isAdmin, user);
-
     if ((isLogged && !!user && user.isAdmin === isAdmin) || (!isLogged && !user)) {
       return true;
     }

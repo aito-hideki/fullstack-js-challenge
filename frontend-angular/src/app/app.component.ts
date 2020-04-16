@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -16,26 +16,34 @@ export class AppComponent {
 
   isLogged$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
+  isLogging$: Observable<boolean>;
 
-  loginDialog: boolean = false;
+  loginDialog = false;
   validateForm: FormGroup;
-  email: string = '';
-  password: string = '';
+
+  closeLoginDialogOnAuthSubscription: Subscription;
 
   ngOnInit() {
     this.isLogged$ = this.authService.isLoggedIn;
     this.isAdmin$ = this.authService.isAdmin;
+    this.isLogging$ = this.authService.isLoggingIn;
 
     this.validateForm = this.fb.group({
       email: [null, [Validators.email, Validators.required]],
       password: [null, [Validators.required]]
-    })
+    });
+
+    this.closeLoginDialogOnAuthSubscription = this.isLogged$.subscribe(this.closeLoginDialogOnAuth.bind(this));
+  }
+
+  ngOnDestroy() {
+    this.closeLoginDialogOnAuthSubscription.unsubscribe();
   }
 
 
   onLogin() {
-    console.log(this.email, this.password)
-    // this.closeLoginDialog();
+    const { email, password } = this.validateForm.value;
+    this.authService.login({ email, password });
   }
 
   onLogout() {
@@ -44,11 +52,15 @@ export class AppComponent {
 
   openLoginDialog() {
     this.loginDialog = true;
-    this.email = '';
-    this.password = '';
   }
 
-  closeLoginDialog () {
+  closeLoginDialog() {
     this.loginDialog = false;
+  }
+
+  closeLoginDialogOnAuth (currentAuthStatus: boolean) {
+    if (currentAuthStatus === true) {
+      this.closeLoginDialog();
+    }
   }
 }
