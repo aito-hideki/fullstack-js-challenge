@@ -15,14 +15,14 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.decode()
-    const url = `${API_URL}${req.url}`
+    const token = this.authService.decode();
+    const url = `${API_URL}${req.url}`;
 
     if (token) {
       const cloned = req.clone({
         url,
         headers: req.headers.set('Authorization', `Bearer ${token.accessToken}`)
-      })
+      });
 
       return next.handle(cloned).pipe(
         catchError(err => {
@@ -31,10 +31,10 @@ export class AuthInterceptor implements HttpInterceptor {
           }
           throw err;
         })
-      )
+      );
     } else {
-      const cloned = req.clone({ url })
-      return next.handle(cloned)
+      const cloned = req.clone({ url });
+      return next.handle(cloned);
     }
   }
 }

@@ -1,1 +1,28 @@
-<p>user-polls works!</p>
+<h1>Polls</h1>
+
+<nz-table #pollsTable [nzData]="polls">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of pollsTable.data">
+      <td>{{data.name}}</td>
+      <td>
+        <button nz-button nzType="primary" nzShape="circle" (click)="answer(data.pollId)">
+          <i nz-icon nzType="message" nzTheme="outline"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="answerDialog" nzTitle="Send Poll to a User" [nzFooter]="sendModalFooter" (nzOnCancel)="answerDialog = false">
+  <label *ngFor="let question of questions" nz-checkbox [(ngModel)]="question[1]">{{question[0]}}</label>
+
+  <ng-template #sendModalFooter>
+    <button nz-button nzType="primary" (click)="submit()">Submit</button>
+  </ng-template>
+</nz-modal>

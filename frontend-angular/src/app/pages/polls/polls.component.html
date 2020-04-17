@@ -1,1 +1,71 @@
-<p>polls works!</p>
+<h1>Polls</h1>
+
+<button nz-button nzType="primary" [nzLoading]="false" (click)="initPollDialog()">Create Poll</button>
+<nz-table #pollsTable [nzData]="polls">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Invited</th>
+      <th>Answers</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of pollsTable.data">
+      <td>{{data.name}}</td>
+      <td>{{data.userCount}}</td>
+      <td>{{data.answerCount}}</td>
+      <td>
+        <button nz-button nzType="primary" nzShape="circle" (click)="showStatus(data.pollId)">
+          <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+        </button>
+        <button nz-button nzType="primary" nzShape="circle" (click)="openSendPoll(data.pollId)">
+          <i nz-icon nzType="question-circle" nzTheme="outline"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="pollDialog" nzTitle="Create a Poll" [nzFooter]="modalFooter" (nzOnCancel)="pollDialog = false">
+  <form nz-form [formGroup]="nameForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Poll Name</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <input nz-input formControlName="name" id="name" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <form nz-form [formGroup]="pollForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="poll">Question</nz-form-label>
+      <nz-form-control [nzSm]="15" [nzXs]="18">
+        <input nz-input formControlName="poll" id="poll" />
+      </nz-form-control>
+      <nz-form-control [nzSm]="3" [nzXs]="6" nzFor="poll">
+        <button nz-button nzType="primary" [disabled]="!pollForm.valid" (click)="addQuestion()">Add</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <h3 *ngFor="let question of questions">{{question}}</h3>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" [disabled]="!nameForm.valid || !questions.length" [nzLoading]="creatingPoll" (click)="createPoll()">Create</button>
+  </ng-template>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="sendPollDialog" nzTitle="Send Poll to a User" [nzFooter]="sendModalFooter" (nzOnCancel)="sendPollDialog = false">
+  <form nz-form [formGroup]="sendForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">User Email</nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <input nz-input formControlName="email" id="email" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <ng-template #sendModalFooter>
+    <button nz-button nzType="primary" [disabled]="!sendForm.valid" (click)="sendPoll()">Send</button>
+  </ng-template>
+</nz-modal>

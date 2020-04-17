@@ -1,1 +1,16 @@
-<p>admins works!</p>
+<h1>Administrators</h1>
+
+<nz-table #adminsTable [nzData]="admins">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of adminsTable.data">
+      <td>{{data.email}}</td>
+      <td>{{data.active ? 'Active' : 'Inactive'}}</td>
+    </tr>
+  </tbody>
+</nz-table>

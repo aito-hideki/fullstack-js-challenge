@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { toCamelCase } from 'src/app/utils/case-convert';
-import { finalize } from 'rxjs/operators';
+import { finalize, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class AuthService {
 
     try {
       token = JSON.parse(localStorage.getItem('voteapp-credential'));
-      if (!token.accessToken || !token.isAdmin) {
+      if (!token.accessToken) {
         token = null;
       }
     } catch (err) {
@@ -46,10 +46,11 @@ export class AuthService {
     const { email, password } = credential;
     this.loggingIn$.next(true);
     this.http.post('/auth/login', { email, password }).pipe(
+      catchError(err => { throw err; })
+    ).pipe(
       finalize(() => this.loggingIn$.next(false))
     ).subscribe(
-      (token) => { this.setToken(toCamelCase(token)) },
-      (err) => { throw err }
+      (token) => { this.setToken(toCamelCase(token)); }
     );
   }
 
@@ -79,9 +80,5 @@ export class AuthService {
   }
   get isLoggingIn() {
     return this.loggingIn$.asObservable();
-  }
-
-  getUserDetails() {
-    // get user information
   }
 }

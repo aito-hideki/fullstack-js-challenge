@@ -1,1 +1,30 @@
-<p>users works!</p>
+<h1>Users</h1>
+
+<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
+      <input nz-input formControlName="email" [disabled]="invitingUser" id="email" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button nzType="primary" [disabled]="!validateForm.valid" [nzLoading]="invitingUser" (click)="inviteUser()">Invite a User</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<nz-table #usersTable [nzData]="users">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of usersTable.data">
+      <td>{{data.email}}</td>
+      <td>{{data.active ? 'Active' : 'Inactive'}}</td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -21,7 +21,11 @@
         <i nz-icon nzType="team" nzTheme="outline"></i>
         Users
       </li>
-      <li *ngIf="(isLogged$ | async)" nz-menu-item routerLink="polls">
+      <li *ngIf="(isAdmin$ | async)" nz-menu-item routerLink="polls">
+        <i nz-icon nzType="solution" nzTheme="outline"></i>
+        Polls
+      </li>
+      <li *ngIf="(isLogged$ | async) && !(isAdmin$ | async)" nz-menu-item routerLink="user-polls">
         <i nz-icon nzType="solution" nzTheme="outline"></i>
         Polls
       </li>

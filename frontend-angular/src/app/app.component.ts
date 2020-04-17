@@ -58,7 +58,7 @@ export class AppComponent {
     this.loginDialog = false;
   }
 
-  closeLoginDialogOnAuth (currentAuthStatus: boolean) {
+  closeLoginDialogOnAuth(currentAuthStatus: boolean) {
     if (currentAuthStatus === true) {
       this.closeLoginDialog();
     }
