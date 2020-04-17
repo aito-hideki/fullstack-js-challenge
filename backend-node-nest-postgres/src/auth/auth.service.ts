@@ -58,6 +58,8 @@ export class AuthService {
   }
 
   sendAccessKey(key: string) {
+    console.log('------------------')
+    console.log(key, this.activationKeys)
     if (!Object.prototype.hasOwnProperty.call(this.activationKeys, key)) {
       throw new BadRequestException('Activation link is not valid');
     }
