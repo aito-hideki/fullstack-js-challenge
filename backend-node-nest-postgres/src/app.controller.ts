@@ -38,7 +38,7 @@ export class AppController {
   async sendAccessCode(@Request() req) {
     const { key } = req.body;
     this.authService.sendAccessKey(key);
-    return 'Access code is sent';
+    return { data: 'Access code is sent' };
   }
 
   @UseGuards(JwtAuthGuard)

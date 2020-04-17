@@ -36,7 +36,7 @@ export class UserService {
   };
 
   createProfile = async (email: string, adminEmail: string) => {
-    if (await this.adminRepository.count({ email }) &&
+    if (await this.adminRepository.count({ email }) ||
       await this.userRepository.count({ email })) {
       throw new ForbiddenException('A user already exists');
     }
@@ -79,12 +79,10 @@ export class UserService {
   };
 
   getPolls = async (userId: number) => await this.pollRepository.find({
-    where: { users: { userId } }
+    where: { userId }
   });
 
   submitAnswer = async (userId: number, pollId: number, answers: boolean[]) => {
-    console.log('----------------')
-    console.log(userId, pollId, answers)
     if (!await this.userRepository.count({ userId })) throw new NotFoundException('No User Found')
 
     const poll = await this.pollRepository.findOneOrFail({
@@ -96,7 +94,6 @@ export class UserService {
       where: { userId }
     })
     const { admin, polls } = user
-    const { users } = poll
 
     await this.paperRepository.save({
       admin,

@@ -115,7 +115,7 @@ export class AdminService {
       where: { email }
     })
 
-    if (user.polls.filter(p => p.pollId === poll.pollId)) {
+    if (user.polls.filter(p => p.pollId === poll.pollId).length) {
       throw new UnprocessableEntityException('This user is already invited to the poll.')
     }
 
